@@ -1,4 +1,14 @@
 extends CharacterBody2D
+class_name Player
+
+
+@export var max_health: float = 100
+@export var current_health: float = 100:
+	set(value):
+		current_health = value
+		EventBus.player_health_changed.emit(current_health)
+		if current_health <= 0:
+			EventBus.player_died.emit()
 
 
 const SPEED = 300.0
@@ -23,3 +33,8 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	move_and_slide()
+
+
+func take_damage(amount: float) -> void:
+	current_health -= amount
+	
