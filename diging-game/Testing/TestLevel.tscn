@@ -9,6 +9,7 @@ size = Vector2(948, 282)
 [node name="TestLevel" type="Node2D" unique_id=1243193336]
 
 [node name="Player" parent="." unique_id=1680850489 instance=ExtResource("1_o7dlr")]
+position = Vector2(115, 165)
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=56938559]
 
