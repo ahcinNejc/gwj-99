@@ -20,7 +20,15 @@ class_name Player
 		if energy <= 0:
 			EventBus.player_out_of_stamina.emit()
 
+@export_group("Drill")
+@export var drill: Drill
+@export var drill_timer: Timer
 @export var drill_energy_drain_rate: float = 20 # drill drains 20 energy per second
+@export var drill_interval: float = 0.3
+@export var drill_damage: float = 50
+
+
+@export_group("Jetpack")
 @export var jetpack_energy_drain_rate: float = 10 # jetpack drains 10 energy per second
 @export var jetpack_velocity: float = -300.0
 
@@ -28,10 +36,17 @@ class_name Player
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
+func _ready() -> void:
+	if drill_timer:
+		drill_timer.wait_time = drill_interval
+
+
 
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("Dig"):
 		try_drilling(delta)
+	if Input.is_action_just_released("Dig"):
+		drill_timer.stop()
 
 
 
@@ -65,9 +80,17 @@ func handle_jump(delta: float) -> void:
 		if energy >= 0:
 			velocity.y = jetpack_velocity
 			energy -= jetpack_energy_drain_rate * delta
+		else:
+			print("Not enough energy for jetpack")
 
 func try_drilling(delta: float) -> void:
 	if energy >= 0:
 		energy -= drill_energy_drain_rate * delta
+		if drill_timer.time_left <= 0:
+			drill_timer.start()
 	else:
-		print("Not enough energy")
+		print("Not enough energy for drill")
+
+
+func _on_drill_timer_timeout() -> void:
+	drill.deal_damage(drill_damage)
