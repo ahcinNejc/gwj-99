@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cnfq1olgxprpv"]
 
 [ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://Scenes/player.tscn" id="1_o7dlr"]
+[ext_resource type="Script" uid="uid://tvhquhkwjrsp" path="res://Testing/energy_bar.gd" id="2_v4qes"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5r1x3"]
 size = Vector2(948, 282)
@@ -16,3 +17,11 @@ size = Vector2(948, 282)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2038831169]
 position = Vector2(162, 375)
 shape = SubResource("RectangleShape2D_5r1x3")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=527021041]
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=24381859 node_paths=PackedStringArray("player")]
+offset_right = 230.0
+offset_bottom = 27.0
+script = ExtResource("2_v4qes")
+player = NodePath("../../Player")

@@ -11,8 +11,26 @@ class_name Player
 			EventBus.player_died.emit()
 
 
+# Drill and Jetpack both use energy 
+@export var max_energy: float = 500
+@export var energy: float = 500:
+	set(value):
+		energy = value
+		EventBus.player_energy_changed.emit(energy)
+		if energy <= 0:
+			EventBus.player_out_of_stamina.emit()
+
+@export var drill_energy_drain_rate: float = 20 # drill drains 10 energy per second
+
+
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
+
+
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("Dig"):
+		try_drilling(delta)
+
 
 
 func _physics_process(delta: float) -> void:
@@ -37,4 +55,10 @@ func _physics_process(delta: float) -> void:
 
 func take_damage(amount: float) -> void:
 	current_health -= amount
-	
+
+
+func try_drilling(delta: float) -> void:
+	if energy >= 0:
+		energy -= drill_energy_drain_rate * delta
+	else:
+		print("Not enough energy")
