@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://cnfq1olgxprpv"]
 
-[ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://Scenes/player.tscn" id="1_o7dlr"]
-[ext_resource type="Script" uid="uid://tvhquhkwjrsp" path="res://Testing/energy_bar.gd" id="2_v4qes"]
+[ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://scenes/player.tscn" id="1_wre0b"]
+[ext_resource type="Script" uid="uid://tvhquhkwjrsp" path="res://testing/energy_bar.gd" id="2_upd6l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5r1x3"]
 size = Vector2(948, 282)
 
 [node name="TestLevel" type="Node2D" unique_id=1243193336]
 
-[node name="Player" parent="." unique_id=1680850489 instance=ExtResource("1_o7dlr")]
+[node name="Player" parent="." unique_id=1680850489 instance=ExtResource("1_wre0b")]
 position = Vector2(115, 165)
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=56938559]
@@ -24,5 +24,5 @@ shape = SubResource("RectangleShape2D_5r1x3")
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer" unique_id=24381859 node_paths=PackedStringArray("player")]
 offset_right = 230.0
 offset_bottom = 27.0
-script = ExtResource("2_v4qes")
+script = ExtResource("2_upd6l")
 player = NodePath("../../Player")

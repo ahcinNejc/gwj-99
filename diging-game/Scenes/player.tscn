@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cb3oadbagsbvh"]
 
-[ext_resource type="Script" uid="uid://cuh61ss5udhwd" path="res://Scripts/player.gd" id="1_cvnsp"]
+[ext_resource type="Script" uid="uid://cuh61ss5udhwd" path="res://scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://j47uyrg407p3" path="res://icon.svg" id="1_v0iea"]
-[ext_resource type="Script" uid="uid://c38dcru4f0dnp" path="res://Scripts/drill.gd" id="3_6t5aa"]
+[ext_resource type="Script" uid="uid://c38dcru4f0dnp" path="res://scripts/drill.gd" id="3_6t5aa"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ndpnn"]
 
@@ -11,6 +11,7 @@ radius = 6.0
 height = 24.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1680850489 node_paths=PackedStringArray("drill", "drill_timer")]
+collision_layer = 2
 script = ExtResource("1_cvnsp")
 drill = NodePath("Drill")
 drill_timer = NodePath("DrillTimer")
