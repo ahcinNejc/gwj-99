@@ -36,13 +36,26 @@ class_name Player
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
+
+## TODO: remove test stuff
+const BRONZE = preload("uid://bu8jpodl1e8a6")
+const SILVER = preload("uid://ddrw7hwqyj64u")
+const GOLD = preload("uid://csuvmflgwwqic")
+
+
+var resources: Array = [BRONZE, SILVER, GOLD]
+
+
+
 func _ready() -> void:
 	if drill_timer:
 		drill_timer.wait_time = drill_interval
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("debug_key"):
+		GameState.add_ore_to_inventory(resources.pick_random().duplicate())
 	if Input.is_action_just_pressed("Charge"):
-		velocity.x += 300 
+		GameState.sell_all_ores()
 
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("Dig"):
@@ -56,7 +69,7 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
+	
 	handle_jump(delta)
 
 	# Get the input direction and handle the movement/deceleration.
@@ -92,7 +105,6 @@ func try_drilling(delta: float) -> void:
 			drill_timer.start()
 	else:
 		print("Not enough energy for drill")
-
 
 func _on_drill_timer_timeout() -> void:
 	drill.deal_damage(drill_damage)
