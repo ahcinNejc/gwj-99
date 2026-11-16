@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://bip5srg2q6vbp"]
+
+[ext_resource type="Texture2D" uid="uid://j47uyrg407p3" path="res://icon.svg" id="1_86p15"]
+[ext_resource type="Script" uid="uid://vpl61plr0efu" path="res://scripts/UI/ore_inventory_icon.gd" id="1_shasq"]
+
+[node name="OreInventoryIcon" type="MarginContainer" unique_id=89853600 node_paths=PackedStringArray("amount_label", "texture_rect", "name_label")]
+custom_minimum_size = Vector2(26, 26)
+offset_right = 128.0
+offset_bottom = 182.0
+script = ExtResource("1_shasq")
+amount_label = NodePath("VBoxContainer/AmountLabel")
+texture_rect = NodePath("VBoxContainer/TextureRect")
+name_label = NodePath("VBoxContainer/NameLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1144451008]
+layout_mode = 2
+alignment = 1
+
+[node name="AmountLabel" type="Label" parent="VBoxContainer" unique_id=189604847]
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer" unique_id=1164152934]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("1_86p15")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="NameLabel" type="Label" parent="VBoxContainer" unique_id=767183228]
+layout_mode = 2
+text = "Ore"
+horizontal_alignment = 1

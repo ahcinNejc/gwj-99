@@ -32,6 +32,7 @@ func sell_all_ores() -> float:
 		money += gained
 	# clear inventory
 	ore_inventory = {}
+	EventBus.ore_inventory_changed.emit(ore_inventory)
 	print("Gained: ", gained)
 	print("Current money: ", money)
 	return gained
