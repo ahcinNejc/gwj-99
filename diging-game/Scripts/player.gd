@@ -40,7 +40,9 @@ func _ready() -> void:
 	if drill_timer:
 		drill_timer.wait_time = drill_interval
 
-
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("Charge"):
+		velocity.x += 300 
 
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("Dig"):

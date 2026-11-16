@@ -16,9 +16,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-EventBus="*uid://cejtawgbcyd6w"
-GameState="*uid://bswcienw1mao"
-AudioManager="*uid://3ctif2y1y0v3"
+AudioManager="*uid://v4llha7gtqm2"
+EventBus="*uid://c817aurbdfw00"
+GameState="*uid://g1ne8x8jimnl"
 
 [display]
 
@@ -55,6 +55,11 @@ jump={
 Dig={
 "deadzone": 0.2,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(106, 15),"global_position":Vector2(115, 63),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":true,"script":null)
+]
+}
+Charge={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(100, 23),"global_position":Vector2(109, 71),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
 

@@ -18,7 +18,8 @@ func _process(delta: float) -> void:
 	else:
 		rotation = lerp_angle(rotation, deg_to_rad(0), 10 * delta)
 		#rotation_degrees = 0
-		
+
+
 func deal_damage(amount: float) -> void:
 	if hitbox.get_overlapping_bodies().size() > 0:
 		print("Deal damage")
