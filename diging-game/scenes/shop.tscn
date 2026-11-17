@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://d0pq1hswftwuv"]
+
+[ext_resource type="Script" uid="uid://hwp1uepkrq6o" path="res://scripts/shop.gd" id="1_xfvoa"]
+[ext_resource type="Texture2D" uid="uid://j47uyrg407p3" path="res://icon.svg" id="2_1l46r"]
+[ext_resource type="PackedScene" uid="uid://fn4x7swkwy0y" path="res://scenes/UI/ShopUI.tscn" id="3_1l46r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ndpnn"]
+size = Vector2(130, 52)
+
+[node name="Shop" type="Node2D" unique_id=1212234807 node_paths=PackedStringArray("interact_icon")]
+script = ExtResource("1_xfvoa")
+interact_icon = NodePath("InteractIcon")
+
+[node name="ShopSprite" type="Sprite2D" parent="." unique_id=2085588189]
+scale = Vector2(1, 0.4140625)
+texture = ExtResource("2_1l46r")
+
+[node name="InteractRange" type="Area2D" parent="." unique_id=1837784958]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractRange" unique_id=263149841]
+shape = SubResource("RectangleShape2D_ndpnn")
+debug_color = Color(0.15412253, 0.6249692, 0.46329653, 0.41960785)
+
+[node name="InteractIcon" type="Sprite2D" parent="." unique_id=963455384]
+visible = false
+position = Vector2(0, -41)
+scale = Vector2(0.15625, 0.1953125)
+texture = ExtResource("2_1l46r")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=175640711]
+layer = 2
+
+[node name="ShopUi" parent="CanvasLayer" unique_id=1823425170 instance=ExtResource("3_1l46r")]
+visible = false
+
+[connection signal="body_entered" from="InteractRange" to="." method="_on_interact_range_body_entered"]
+[connection signal="body_exited" from="InteractRange" to="." method="_on_interact_range_body_exited"]

@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://fn4x7swkwy0y"]
+
+[ext_resource type="Script" uid="uid://blnku1lip687a" path="res://scripts/UI/shop_ui.gd" id="1_i6mk6"]
+
+[node name="ShopUi" type="MarginContainer" unique_id=1823425170 node_paths=PackedStringArray("sell_all_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 80
+script = ExtResource("1_i6mk6")
+sell_all_button = NodePath("PanelContainer/VBoxContainer/SellAllButton")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1666035311]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=2025357589]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1698046825]
+layout_mode = 2
+text = "Shop"
+horizontal_alignment = 1
+
+[node name="SellAllButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1032678134]
+layout_mode = 2
+text = "Sell all
+"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/SellAllButton" to="." method="_on_sell_all_button_pressed"]

@@ -45,9 +45,11 @@ const GOLD = preload("uid://csuvmflgwwqic")
 
 var resources: Array = [BRONZE, SILVER, GOLD]
 
-
+var in_shop: bool = false
 
 func _ready() -> void:
+	EventBus.shop_opened.connect(on_shop_opened)
+	EventBus.shop_closed.connect(on_shop_closed)
 	if drill_timer:
 		drill_timer.wait_time = drill_interval
 
@@ -58,10 +60,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		GameState.sell_all_ores()
 
 func _process(delta: float) -> void:
-	if Input.is_action_pressed("Dig"):
-		try_drilling(delta)
-	if Input.is_action_just_released("Dig"):
-		drill_timer.stop()
+	if not in_shop:
+		if Input.is_action_pressed("Dig"):
+			try_drilling(delta)
+		if Input.is_action_just_released("Dig"):
+			drill_timer.stop()
 
 
 
@@ -70,17 +73,25 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	handle_jump(delta)
+	if not in_shop:
+		handle_jump(delta)
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("move_left", "move_right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		# Get the input direction and handle the movement/deceleration.
+		# As good practice, you should replace UI actions with custom gameplay actions.
+		var direction := Input.get_axis("move_left", "move_right")
+		if direction:
+			velocity.x = direction * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	move_and_slide()
+
+
+func on_shop_opened() -> void:
+	in_shop = true
+
+func on_shop_closed() -> void:
+	in_shop = false
 
 
 func take_damage(amount: float) -> void:
