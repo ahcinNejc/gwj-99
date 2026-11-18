@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bip5srg2q6vbp"]
 
-[ext_resource type="Texture2D" uid="uid://j47uyrg407p3" path="res://icon.svg" id="1_86p15"]
 [ext_resource type="Script" uid="uid://vpl61plr0efu" path="res://scripts/UI/ore_inventory_icon.gd" id="1_shasq"]
+[ext_resource type="Texture2D" uid="uid://bfvv0y1igts8n" path="res://assets/player/test_ore.png" id="2_shasq"]
 
 [node name="OreInventoryIcon" type="MarginContainer" unique_id=89853600 node_paths=PackedStringArray("amount_label", "texture_rect", "name_label")]
 custom_minimum_size = Vector2(26, 26)
@@ -25,7 +25,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("1_86p15")
+texture = ExtResource("2_shasq")
 expand_mode = 1
 stretch_mode = 4
 

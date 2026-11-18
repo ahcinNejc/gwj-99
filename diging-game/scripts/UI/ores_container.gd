@@ -15,7 +15,7 @@ func update_ore_invetory(current_inventory) -> void:
 		var data: OreData = current_inventory[ore]
 		var icon: OreInventoryIcon = ORE_INVENTORY_ICON.instantiate()
 		icon.amount_label.text = str(data.amount_in_stack)
-		icon.texture_rect.texture = data.texture
+		icon.texture_rect.texture = load(data.texture)
 		icon.name_label.text = data.display_name
 		add_child(icon)
 	

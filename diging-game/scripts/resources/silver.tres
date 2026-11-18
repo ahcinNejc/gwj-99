@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="OreData" format=3 uid="uid://ddrw7hwqyj64u"]
 
 [ext_resource type="Script" uid="uid://cpxwjviwrnsry" path="res://scripts/ore_data.gd" id="1_bnhrt"]
-[ext_resource type="Texture2D" uid="uid://j47uyrg407p3" path="res://icon.svg" id="2_2enj7"]
 
 [resource]
 script = ExtResource("1_bnhrt")
 display_name = "Silver"
 value = 5.0
+texture = "res://assets/ores/silver.png"
 metadata/_custom_type_script = "uid://cpxwjviwrnsry"

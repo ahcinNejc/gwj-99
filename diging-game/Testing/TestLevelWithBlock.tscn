@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c8ds0a2lrht57"]
 
 [ext_resource type="PackedScene" uid="uid://d0pq1hswftwuv" path="res://scenes/shop.tscn" id="1_j0r27"]
+[ext_resource type="Script" uid="uid://duorsni36t3oh" path="res://testing/test_level_with_block.gd" id="1_jeumc"]
 [ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://scenes/player.tscn" id="2_txhx8"]
 [ext_resource type="Script" uid="uid://tvhquhkwjrsp" path="res://scripts/UI/energy_bar.gd" id="3_u0rmp"]
 [ext_resource type="Script" uid="uid://dy13pe5ursemt" path="res://scripts/UI/ores_container.gd" id="4_efxom"]
@@ -9,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cjlqxo6sa6unl" path="res://scenes/world_grid/world_grid.tscn" id="7_txhx8"]
 
 [node name="TestLevel" type="Node2D" unique_id=1243193336]
+script = ExtResource("1_jeumc")
 
 [node name="Shop" parent="." unique_id=1212234807 instance=ExtResource("1_j0r27")]
 position = Vector2(129, -53)

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="OreData" format=3 uid="uid://bu8jpodl1e8a6"]
+
+[ext_resource type="Script" uid="uid://cpxwjviwrnsry" path="res://scripts/ore_data.gd" id="1_ji1qv"]
+
+[resource]
+script = ExtResource("1_ji1qv")
+display_name = "Copper"
+texture = "res://assets/ores/copper.png"
+metadata/_custom_type_script = "uid://cpxwjviwrnsry"

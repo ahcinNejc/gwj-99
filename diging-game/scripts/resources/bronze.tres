@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="OreData" format=3 uid="uid://bu8jpodl1e8a6"]
-
-[ext_resource type="Script" uid="uid://cpxwjviwrnsry" path="res://scripts/ore_data.gd" id="1_13hn3"]
-[ext_resource type="Texture2D" uid="uid://j47uyrg407p3" path="res://icon.svg" id="2_rk5lt"]
-
-[resource]
-script = ExtResource("1_13hn3")
-display_name = "Bronze"
-metadata/_custom_type_script = "uid://cpxwjviwrnsry"
