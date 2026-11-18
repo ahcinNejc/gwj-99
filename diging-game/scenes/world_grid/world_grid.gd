@@ -3,18 +3,19 @@ extends Node2D
 @onready var data_layer: TileMapLayer = $DataLayer
 @onready var display_layer: TileMapLayer = $DisplayLayer
 
-const SOURCE_ID := 0 # display_layer atlas ID
+const SOURCE_ID := 2 # display_layer atlas ID
 
 const FILLED_ATLAS := Vector2i(1, 0)
 
+# "Material": atlas_cords, tile_source_ID
 const MATERIAL_ATLAS := {
-	"Dirt": Vector2i(0, 0),
-	"Stone": Vector2i(1, 0),
-	"Copper": Vector2i(2, 0),
-	"Iron": Vector2i(3, 0),
-	"Gold": Vector2i(4, 0),
-	"Emerald": Vector2i(5, 0),
-	"Diamond": Vector2i(6, 0),
+	"Dirt": [Vector2i(0, 0), 0],
+	"Stone": [Vector2i(1, 0), 1],
+	"Copper": [Vector2i(2, 0), 2],
+	"Iron": [Vector2i(3, 0), 3],
+	"Gold": [Vector2i(4, 0), 4],
+	"Emerald": [Vector2i(5, 0), 5],
+	"Diamond": [Vector2i(6, 0), 6],
 }
 
 
@@ -32,13 +33,6 @@ func _ready() -> void:
 	# Build visuals for anything painted in the editor
 	for cell in data_layer.get_used_cells():
 		_update_around(cell)
-
-func set_filled(cell: Vector2i, filled: bool) -> void:
-	if filled:
-		data_layer.set_cell(cell, SOURCE_ID, FILLED_ATLAS)
-	else:
-		data_layer.erase_cell(cell)
-	_update_around(cell)
 
 func _update_around(data_cell: Vector2i) -> void:
 	for offset in AFFECTED:

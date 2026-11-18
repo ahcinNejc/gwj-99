@@ -1,20 +1,34 @@
 [gd_scene format=4 uid="uid://cjlqxo6sa6unl"]
 
 [ext_resource type="Script" uid="uid://c8o2gxgeo5mgc" path="res://scenes/world_grid/world_grid.gd" id="1_kp88d"]
-[ext_resource type="Texture2D" uid="uid://clsfo0ye7c7xr" path="res://assets/blocks/block.png" id="2_euf52"]
+[ext_resource type="Texture2D" uid="uid://clsfo0ye7c7xr" path="res://assets/blocks/dirt.png" id="2_euf52"]
 [ext_resource type="Texture2D" uid="uid://qyhvld5rv4k4" path="res://assets/blocks/data.png" id="2_osbf6"]
+[ext_resource type="Texture2D" uid="uid://dvrv1kq8kvstr" path="res://assets/blocks/stone.png" id="4_uc6xf"]
+[ext_resource type="Texture2D" uid="uid://khwk3qphqrqc" path="res://assets/blocks/copper.png" id="5_x5chd"]
+[ext_resource type="Texture2D" uid="uid://bhsoj8qadvvun" path="res://assets/blocks/iron.png" id="6_w00xg"]
+[ext_resource type="Texture2D" uid="uid://cfcwxbwosi870" path="res://assets/blocks/gold.png" id="7_ck67c"]
+[ext_resource type="Texture2D" uid="uid://cox1ewvheexp3" path="res://assets/blocks/emerald.png" id="8_ng7vx"]
+[ext_resource type="Texture2D" uid="uid://21urxa72djfh" path="res://assets/blocks/diamond.png" id="9_as4qr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_isnm5"]
 texture = ExtResource("2_osbf6")
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 4:0/0 = 0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 6:0/0 = 0
+6:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 5:0/0 = 0
+5:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_1l8k1"]
+physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_isnm5")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_osbf6"]
@@ -36,8 +50,128 @@ texture = ExtResource("2_euf52")
 15:0/0 = 0
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x5chd"]
+texture = ExtResource("4_uc6xf")
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w00xg"]
+texture = ExtResource("5_x5chd")
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ck67c"]
+texture = ExtResource("6_w00xg")
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ng7vx"]
+texture = ExtResource("7_ck67c")
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_as4qr"]
+texture = ExtResource("8_ng7vx")
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_asvtb"]
+texture = ExtResource("9_as4qr")
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+13:0/0 = 0
+14:0/0 = 0
+15:0/0 = 0
+0:0/0 = 0
+
 [sub_resource type="TileSet" id="TileSet_blwib"]
 sources/0 = SubResource("TileSetAtlasSource_osbf6")
+sources/1 = SubResource("TileSetAtlasSource_x5chd")
+sources/2 = SubResource("TileSetAtlasSource_w00xg")
+sources/3 = SubResource("TileSetAtlasSource_ck67c")
+sources/4 = SubResource("TileSetAtlasSource_ng7vx")
+sources/5 = SubResource("TileSetAtlasSource_as4qr")
+sources/6 = SubResource("TileSetAtlasSource_asvtb")
 
 [node name="WorldGrid" type="Node2D" unique_id=1165291489]
 script = ExtResource("1_kp88d")
