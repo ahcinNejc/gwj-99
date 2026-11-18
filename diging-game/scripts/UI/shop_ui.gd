@@ -14,7 +14,7 @@ func _ready() -> void:
 
 func _on_inventory_changed(current_inventory) -> void:
 	if sell_all_button:
-		if GameState.ore_inventory.size() <= 0:
+		if current_inventory.size() <= 0:
 			sell_all_button.disabled = true
 		else:
 			sell_all_button.disabled = false

@@ -1,4 +1,5 @@
 extends Node2D
+class_name WorldGrid
 
 @onready var data_layer: TileMapLayer = $DataLayer
 

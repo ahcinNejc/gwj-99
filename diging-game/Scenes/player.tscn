@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://c38dcru4f0dnp" path="res://scripts/drill.gd" id="3_6t5aa"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ndpnn"]
+radius = 13.0
+height = 26.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5r1x3"]
 radius = 6.0
@@ -16,17 +18,18 @@ script = ExtResource("1_cvnsp")
 drill = NodePath("Drill")
 drill_timer = NodePath("DrillTimer")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1992314107]
-shape = SubResource("CapsuleShape2D_ndpnn")
-
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1889859225]
 position = Vector2(-3.8146973e-06, 3.8146973e-06)
 scale = Vector2(0.203125, 0.203125)
 texture = ExtResource("1_v0iea")
 
-[node name="Drill" type="Node2D" parent="." unique_id=972122787 node_paths=PackedStringArray("hitbox")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1992314107]
+shape = SubResource("CapsuleShape2D_ndpnn")
+
+[node name="Drill" type="Node2D" parent="." unique_id=972122787 node_paths=PackedStringArray("hitbox", "drill_locator")]
 script = ExtResource("3_6t5aa")
 hitbox = NodePath("Area2D")
+drill_locator = NodePath("DrillLocator")
 
 [node name="Sprite2D" type="Sprite2D" parent="Drill" unique_id=1483497278]
 position = Vector2(18, 3.8146973e-06)
@@ -40,6 +43,9 @@ position = Vector2(18, 0)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_5r1x3")
 debug_color = Color(0.826516, 0.2656865, 0.74047416, 0.41960785)
+
+[node name="DrillLocator" type="Marker2D" parent="Drill" unique_id=253242801]
+position = Vector2(25, 0)
 
 [node name="DrillTimer" type="Timer" parent="." unique_id=1789266069]
 wait_time = 0.1

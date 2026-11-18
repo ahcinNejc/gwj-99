@@ -41,6 +41,10 @@ folder_colors={
 "res://testing/": "red"
 }
 
+[global_group]
+
+Blocks=""
+
 [input]
 
 move_left={
