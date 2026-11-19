@@ -1,9 +1,11 @@
-extends Node2D
 class_name Drill
+extends Node2D
 
 @export var hitbox: Area2D
 @export var drill_locator: Marker2D
 
+# assigned by World.tscn script
+var world_grid: WorldGrid
 
 func _process(delta: float) -> void:
 	#var direction = (get_global_mouse_position() - global_position).normalized()
@@ -20,6 +22,5 @@ func _process(delta: float) -> void:
 
 
 func deal_damage(amount: float) -> void:
-	var world_grid: WorldGrid = get_tree().get_first_node_in_group("Blocks")
 	var location: Vector2i = world_grid.data_layer.local_to_map(drill_locator.global_position)
 	world_grid.clear_cell(location)

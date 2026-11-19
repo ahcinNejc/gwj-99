@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://vt487ua5to1j"]
+
+[ext_resource type="Script" uid="uid://cw6jttmnkrd3e" path="res://testing/world.gd" id="1_6jdkp"]
+[ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://scenes/player/player.tscn" id="2_2wjc2"]
+[ext_resource type="PackedScene" uid="uid://d0pq1hswftwuv" path="res://scenes/shop.tscn" id="3_iptrd"]
+[ext_resource type="PackedScene" uid="uid://cjlqxo6sa6unl" path="res://scenes/world_grid/world_grid.tscn" id="4_5o66b"]
+[ext_resource type="PackedScene" uid="uid://b3dkc7lk0x7ne" path="res://scenes/UI/ui.tscn" id="5_e07vp"]
+
+[node name="World" type="Node2D" unique_id=919789753]
+script = ExtResource("1_6jdkp")
+
+[node name="Player" parent="." unique_id=1680850489 instance=ExtResource("2_2wjc2")]
+unique_name_in_owner = true
+position = Vector2(195, -85)
+
+[node name="Shop" parent="." unique_id=1212234807 instance=ExtResource("3_iptrd")]
+position = Vector2(74, -30)
+
+[node name="WorldGrid" parent="." unique_id=1165291489 instance=ExtResource("4_5o66b")]
+unique_name_in_owner = true
+
+[node name="UI" parent="." unique_id=1882404124 instance=ExtResource("5_e07vp")]
+unique_name_in_owner = true
