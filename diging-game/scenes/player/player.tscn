@@ -13,11 +13,9 @@ radius = 15.0
 radius = 6.0
 height = 24.0
 
-[node name="Player" type="CharacterBody2D" unique_id=1680850489 node_paths=PackedStringArray("drill", "drill_timer")]
+[node name="Player" type="CharacterBody2D" unique_id=1680850489]
 collision_layer = 2
 script = ExtResource("1_cvnsp")
-drill = NodePath("Drill")
-drill_timer = NodePath("DrillTimer")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1889859225]
 unique_name_in_owner = true
@@ -26,10 +24,10 @@ texture = ExtResource("2_dqkch")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1992314107]
 shape = SubResource("CapsuleShape2D_ndpnn")
 
-[node name="Drill" type="Node2D" parent="." unique_id=972122787 node_paths=PackedStringArray("hitbox", "drill_locator")]
+[node name="Drill" type="Node2D" parent="." unique_id=972122787 node_paths=PackedStringArray("drill_timer")]
+unique_name_in_owner = true
 script = ExtResource("3_6t5aa")
-hitbox = NodePath("Area2D")
-drill_locator = NodePath("DrillLocator")
+drill_timer = NodePath("DrillTimer")
 
 [node name="Sprite2D" type="Sprite2D" parent="Drill" unique_id=1483497278]
 position = Vector2(16, 0)
@@ -46,11 +44,11 @@ debug_color = Color(0.826516, 0.2656865, 0.74047416, 0.41960785)
 [node name="DrillLocator" type="Marker2D" parent="Drill" unique_id=253242801]
 position = Vector2(25, 0)
 
-[node name="DrillTimer" type="Timer" parent="." unique_id=1789266069]
+[node name="DrillTimer" type="Timer" parent="Drill" unique_id=1789266069]
 wait_time = 0.1
 one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1549480372]
 script = ExtResource("5_fkybt")
 
-[connection signal="timeout" from="DrillTimer" to="." method="_on_drill_timer_timeout"]
+[connection signal="timeout" from="Drill/DrillTimer" to="." method="_on_drill_timer_timeout"]
