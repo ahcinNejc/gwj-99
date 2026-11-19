@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://cb3oadbagsbvh"]
 
-[ext_resource type="Script" uid="uid://cuh61ss5udhwd" path="res://Scripts/player.gd" id="1_cvnsp"]
+[ext_resource type="Script" uid="uid://cuh61ss5udhwd" path="res://scenes/player/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://bcfcib3ulsw7s" path="res://assets/player/player.png" id="2_dqkch"]
-[ext_resource type="Script" uid="uid://c38dcru4f0dnp" path="res://Scripts/drill.gd" id="3_6t5aa"]
+[ext_resource type="Script" uid="uid://c38dcru4f0dnp" path="res://scenes/player/drill.gd" id="3_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://85mlk3e68kf5" path="res://assets/player/drill.png" id="4_dqkch"]
-[ext_resource type="Script" uid="uid://d1ppp58nlflfl" path="res://Scenes/camera_2d.gd" id="5_fkybt"]
+[ext_resource type="Script" uid="uid://d1ppp58nlflfl" path="res://scenes/player/camera_2d.gd" id="5_fkybt"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ndpnn"]
 radius = 15.0

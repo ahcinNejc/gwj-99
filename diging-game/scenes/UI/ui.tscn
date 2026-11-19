@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://b3dkc7lk0x7ne"]
+
+[ext_resource type="Script" uid="uid://tvhquhkwjrsp" path="res://scripts/UI/energy_bar.gd" id="1_2246s"]
+[ext_resource type="Script" uid="uid://bwxl5av6v00wa" path="res://scripts/UI/ui.gd" id="1_q7pk6"]
+[ext_resource type="Script" uid="uid://dy13pe5ursemt" path="res://scripts/UI/ores_container.gd" id="2_q7pk6"]
+[ext_resource type="PackedScene" uid="uid://bip5srg2q6vbp" path="res://scenes/shop_inventory_UI/OreInventoryIcon.tscn" id="3_m78vo"]
+[ext_resource type="Script" uid="uid://c0thfc58ykevm" path="res://scripts/UI/money_label.gd" id="4_smcll"]
+
+[node name="UI" type="CanvasLayer" unique_id=1882404124]
+script = ExtResource("1_q7pk6")
+
+[node name="EnergyBar" type="ProgressBar" parent="." unique_id=1571655774]
+unique_name_in_owner = true
+offset_right = 230.0
+offset_bottom = 27.0
+script = ExtResource("1_2246s")
+
+[node name="OresContainer" type="HBoxContainer" parent="." unique_id=560417504]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+script = ExtResource("2_q7pk6")
+
+[node name="OreInventoryIcon" parent="OresContainer" unique_id=89853600 instance=ExtResource("3_m78vo")]
+visible = false
+layout_mode = 2
+
+[node name="OreInventoryIcon2" parent="OresContainer" unique_id=1722005230 instance=ExtResource("3_m78vo")]
+visible = false
+layout_mode = 2
+
+[node name="MoneyLabel" type="Label" parent="." unique_id=1457975982]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -71.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "Money: 0"
+script = ExtResource("4_smcll")

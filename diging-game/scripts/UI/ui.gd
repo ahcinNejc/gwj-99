@@ -1,9 +1,11 @@
-extends Node2D
+class_name UserInterfaceLayer
+extends CanvasLayer
 
+@onready var energy_bar: EnergyBar = %EnergyBar
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	AudioManager.play_music("silly")
+	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

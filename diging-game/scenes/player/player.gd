@@ -62,7 +62,7 @@ extends CharacterBody2D
 ## How fast the stretch eases in and out as your vertical speed changes
 @export var stretch_smooth_speed: float = 18.0
 ## 0 = height changes only, 0.5 = roughly keeps the sprite's "volume" (wider when squashed)
-@export_range(0.0, 1.0) var width_compensation: float = 0.3
+@export_range(0.0, 1.0) var width_compensation: float = 0.5
 
 
 ## TODO: remove test stuff
@@ -114,7 +114,7 @@ func _process(delta: float) -> void:
 		# Also covers releasing the button, opening the shop, dying
 		stop_drilling()
 
-	update_squash_stretch(delta)
+	_update_squash_stretch(delta)
 
 
 func _physics_process(delta: float) -> void:
@@ -219,7 +219,31 @@ func on_landed(impact_speed: float) -> void:
 	stretch_current = 0.0 # drop the fall stretch so the squash reads immediately
 
 
-func update_squash_stretch(delta: float) -> void:
+# Public API
+
+func take_damage(amount: float) -> void:
+	if is_dead:
+		return
+	current_health -= amount
+
+
+
+## Call this for knockback, explosions, etc. e.g. apply_knockback(Vector2(200, -150))
+func apply_knockback(impulse: Vector2) -> void:
+	external_velocity += impulse
+
+
+func on_shop_opened() -> void:
+	in_shop = true
+
+
+func on_shop_closed() -> void:
+	in_shop = false
+
+
+# Private Methods
+
+func _update_squash_stretch(delta: float) -> void:
 	if not sprite:
 		return
 	if not squash_stretch_enabled:
@@ -243,22 +267,3 @@ func update_squash_stretch(delta: float) -> void:
 	# Scale around the feet, not the sprite's center, so it doesn't float or sink into the ground
 	var bottom := sprite.get_rect().end.y * sprite_base_scale.y
 	sprite.position.y = sprite_base_position.y + bottom * (1.0 - scale_y)
-
-
-func take_damage(amount: float) -> void:
-	if is_dead:
-		return
-	current_health -= amount
-
-
-## Call this for knockback, explosions, etc. e.g. apply_knockback(Vector2(200, -150))
-func apply_knockback(impulse: Vector2) -> void:
-	external_velocity += impulse
-
-
-func on_shop_opened() -> void:
-	in_shop = true
-
-
-func on_shop_closed() -> void:
-	in_shop = false

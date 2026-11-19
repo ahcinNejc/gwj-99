@@ -1,13 +1,14 @@
+class_name EnergyBar
 extends ProgressBar
 
 @export var player: Player
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
+# Pass in player and set up the bar
+func set_up_bar(p: Player) -> void:
+	player = p
 	max_value = player.max_energy
 	value = player.energy
 	EventBus.player_energy_changed.connect(update_bar)
-	
 
 
 func update_bar(current_energy: float) -> void:
