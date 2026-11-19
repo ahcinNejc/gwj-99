@@ -8,6 +8,7 @@
 size = Vector2(130, 52)
 
 [node name="Shop" type="Node2D" unique_id=1212234807 node_paths=PackedStringArray("interact_icon")]
+z_index = -1
 script = ExtResource("1_xfvoa")
 interact_icon = NodePath("InteractIcon")
 
