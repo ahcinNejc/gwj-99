@@ -14,8 +14,9 @@ func _ready() -> void:
 	drill.world_grid = world_grid
 	
 	# generate world
-	world_grid.data_layer.generate()
-	world_grid.refresh_display()
+	world_grid.generate()
+	
+	
 	AudioManager.play_music("silly")
 
 

@@ -24,53 +24,34 @@ extends CharacterBody2D
 @export var move_speed: float = 125.0
 @export var acceleration: float = 300.0
 @export var friction: float = 250.0
-## 1.0 = same control as on the ground, lower = floatier in the air
-@export_range(0.0, 1.0) var air_control: float = 0.6
-## Exponential decay rate for knockback / explosion impulses (higher = fades faster)
-@export var external_velocity_decay: float = 4.0
+@export_range(0.0, 1.0) var air_control: float = 0.6 ## 1.0 = same control as on the ground, lower = floatier in the air
+@export var external_velocity_decay: float = 4.0 ## Exponential decay rate for knockback / explosion impulses (higher = fades faster)
 @export var jump_velocity: float = -400.0
-## Terminal velocity: falling speed never exceeds this (px/s)
-@export var max_fall_speed: float = 400.0
-
-@export_group("Drill")
-@export var drill: Drill
-@export var drill_timer: Timer
-@export var drill_energy_drain_rate: float = 20 # drill drains 20 energy per second
-@export var drill_interval: float = 0.3
-@export var drill_damage: float = 50
+@export var max_fall_speed: float = 400.0 ## Terminal velocity: falling speed never exceeds this (px/s)
 
 @export_group("Jetpack")
 @export var jetpack_energy_drain_rate: float = 10 # jetpack drains 10 energy per second
-## Max upward speed while the jetpack is firing
-@export var jetpack_velocity: float = -300.0
-## How quickly the jetpack pushes you up to that speed
-@export var jetpack_acceleration: float = 1500.0
-## If true, you must press jump again in the air to fire the jetpack,
-## so normal jumps don't waste energy
-@export var jetpack_needs_repress: bool = true
+@export var jetpack_velocity: float = -300.0 ## Max upward speed while the jetpack is firing
+@export var jetpack_acceleration: float = 1500.0 ## How quickly the jetpack pushes you up to that speed
+@export var jetpack_needs_repress: bool = true ## If true, you must press jump again in the air to fire the jetpack,
 
 @export_group("Squash & Stretch")
 @export var squash_stretch_enabled: bool = true
-## How much the sprite stretches vertically at max speed (0.2 = 20% taller)
-@export var stretch_amount: float = 0.2
-## How much the sprite squashes on the hardest landing (0.3 = 30% shorter)
-@export var landing_squash_amount: float = 0.3
-## Landings slower than this (px/s) don't squash
-@export var min_landing_speed: float = 120.0
-## How fast the squash springs back to normal
-@export var squash_recovery_speed: float = 14.0
-## How fast the stretch eases in and out as your vertical speed changes
-@export var stretch_smooth_speed: float = 18.0
-## 0 = height changes only, 0.5 = roughly keeps the sprite's "volume" (wider when squashed)
-@export_range(0.0, 1.0) var width_compensation: float = 0.5
+@export var stretch_amount: float = 0.2 ## How much the sprite stretches vertically at max speed (0.2 = 20% taller)
+@export var landing_squash_amount: float = 0.3 ## How much the sprite squashes on the hardest landing (0.3 = 30% shorter)
+@export var min_landing_speed: float = 120.0 ## Landings slower than this (px/s) don't squash
+@export var squash_recovery_speed: float = 14.0 ## How fast the squash springs back to normal
+@export var stretch_smooth_speed: float = 18.0 ## How fast the stretch eases in and out as your vertical speed changes
+@export_range(0.0, 1.0) var width_compensation: float = 0.5 ## 0 = height changes only, 0.5 = roughly keeps the sprite's "volume" (wider when squashed)
+
 
 
 ## TODO: remove test stuff
-const BRONZE = preload("uid://bu8jpodl1e8a6")
-const SILVER = preload("uid://ddrw7hwqyj64u")
-const GOLD = preload("uid://csuvmflgwwqic")
+const COPPER = preload("res://scripts/resources/copper.tres")
+const IRON = preload("res://scripts/resources/iron.tres")
+const GOLD = preload("res://scripts/resources/gold.tres")
 
-var resources: Array = [BRONZE, SILVER, GOLD]
+var resources: Array = [COPPER, IRON, GOLD]
 
 var in_shop: bool = false
 var is_dead: bool = false
@@ -86,6 +67,7 @@ var was_on_floor: bool = false
 var stretch_current: float = 0.0 # smoothed stretch from vertical speed
 var squash_current: float = 0.0  # landing squash, decays back to 0
 
+@onready var drill: Drill = %Drill
 
 func _ready() -> void:
 	if sprite:
@@ -93,11 +75,7 @@ func _ready() -> void:
 		sprite_base_position = sprite.position
 	EventBus.shop_opened.connect(on_shop_opened)
 	EventBus.shop_closed.connect(on_shop_closed)
-	if drill_timer:
-		drill_timer.wait_time = drill_interval
-		# Safe to leave the editor connection in place; this only connects if missing
-		if not drill_timer.timeout.is_connected(_on_drill_timer_timeout):
-			drill_timer.timeout.connect(_on_drill_timer_timeout)
+
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -109,10 +87,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	if can_act() and Input.is_action_pressed("Dig"):
-		try_drilling(delta)
+		drill.try_drilling(delta)
 	else:
-		# Also covers releasing the button, opening the shop, dying
-		stop_drilling()
+		drill.stop_drilling()
 
 	_update_squash_stretch(delta)
 
@@ -131,8 +108,6 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, friction * delta)
 
 	# External velocity is added for the move, then removed so it
-	# never gets mixed into the input-driven velocity
-	# Speed we're travelling at the moment of impact (used for the landing squash)
 	var impact_speed := velocity.y
 	velocity += external_velocity
 	move_and_slide()
@@ -152,7 +127,7 @@ func _physics_process(delta: float) -> void:
 	velocity -= external_velocity
 	external_velocity = external_velocity.lerp(Vector2.ZERO, 1.0 - exp(-external_velocity_decay * delta))
 
-
+# always check for any action veing done
 func can_act() -> bool:
 	return not in_shop and not is_dead
 
@@ -191,26 +166,6 @@ func handle_jump(delta: float) -> void:
 			velocity.y = maxf(velocity.y - jetpack_acceleration * delta, jetpack_velocity)
 		energy -= jetpack_energy_drain_rate * delta
 
-
-func try_drilling(delta: float) -> void:
-	if energy <= 0.0:
-		stop_drilling()
-		return
-	energy -= drill_energy_drain_rate * delta
-	if drill_timer and drill_timer.is_stopped():
-		drill_timer.start()
-
-
-func stop_drilling() -> void:
-	if drill_timer and not drill_timer.is_stopped():
-		drill_timer.stop()
-
-
-func _on_drill_timer_timeout() -> void:
-	if drill and can_act():
-		drill.deal_damage(drill_damage)
-
-
 func on_landed(impact_speed: float) -> void:
 	if impact_speed < min_landing_speed:
 		return
@@ -226,16 +181,12 @@ func take_damage(amount: float) -> void:
 		return
 	current_health -= amount
 
-
-
 ## Call this for knockback, explosions, etc. e.g. apply_knockback(Vector2(200, -150))
 func apply_knockback(impulse: Vector2) -> void:
 	external_velocity += impulse
 
-
 func on_shop_opened() -> void:
 	in_shop = true
-
 
 func on_shop_closed() -> void:
 	in_shop = false
@@ -243,6 +194,7 @@ func on_shop_closed() -> void:
 
 # Private Methods
 
+# Squishy SQUASHY THINGY
 func _update_squash_stretch(delta: float) -> void:
 	if not sprite:
 		return
