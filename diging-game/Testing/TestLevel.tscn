@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cnfq1olgxprpv"]
 
-[ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://scenes/player.tscn" id="1_wre0b"]
+[ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://Scenes/player.tscn" id="1_wre0b"]
 [ext_resource type="Script" uid="uid://tvhquhkwjrsp" path="res://scripts/UI/energy_bar.gd" id="2_upd6l"]
 [ext_resource type="Script" uid="uid://dy13pe5ursemt" path="res://scripts/UI/ores_container.gd" id="3_rth07"]
 [ext_resource type="PackedScene" uid="uid://bip5srg2q6vbp" path="res://scenes/UI/OreInventoryIcon.tscn" id="4_rth07"]
@@ -17,8 +17,6 @@ position = Vector2(-31, 199)
 
 [node name="Player" parent="." unique_id=1680850489 instance=ExtResource("1_wre0b")]
 position = Vector2(115, 165)
-
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=56938559]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=115250200]
 

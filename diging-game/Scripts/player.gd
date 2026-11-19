@@ -1,24 +1,36 @@
-extends CharacterBody2D
 class_name Player
+extends CharacterBody2D
 
 
 @export var max_health: float = 100
 @export var current_health: float = 100:
 	set(value):
-		current_health = value
+		current_health = clampf(value, 0.0, max_health)
 		EventBus.player_health_changed.emit(current_health)
-		if current_health <= 0:
+		if current_health <= 0.0 and not is_dead:
+			is_dead = true
 			EventBus.player_died.emit()
 
-
-# Drill and Jetpack both use energy 
+# Drill and Jetpack both use energy
 @export var max_energy: float = 500
 @export var energy: float = 500:
 	set(value):
-		energy = value
+		energy = clampf(value, 0.0, max_energy)
 		EventBus.player_energy_changed.emit(energy)
-		if energy <= 0:
+		if energy <= 0.0:
 			EventBus.player_out_of_stamina.emit()
+
+@export_group("Movement")
+@export var move_speed: float = 125.0
+@export var acceleration: float = 300.0
+@export var friction: float = 250.0
+## 1.0 = same control as on the ground, lower = floatier in the air
+@export_range(0.0, 1.0) var air_control: float = 0.6
+## Exponential decay rate for knockback / explosion impulses (higher = fades faster)
+@export var external_velocity_decay: float = 4.0
+@export var jump_velocity: float = -400.0
+## Terminal velocity: falling speed never exceeds this (px/s)
+@export var max_fall_speed: float = 400.0
 
 @export_group("Drill")
 @export var drill: Drill
@@ -27,14 +39,30 @@ class_name Player
 @export var drill_interval: float = 0.3
 @export var drill_damage: float = 50
 
-
 @export_group("Jetpack")
 @export var jetpack_energy_drain_rate: float = 10 # jetpack drains 10 energy per second
+## Max upward speed while the jetpack is firing
 @export var jetpack_velocity: float = -300.0
+## How quickly the jetpack pushes you up to that speed
+@export var jetpack_acceleration: float = 1500.0
+## If true, you must press jump again in the air to fire the jetpack,
+## so normal jumps don't waste energy
+@export var jetpack_needs_repress: bool = true
 
-
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+@export_group("Squash & Stretch")
+@export var squash_stretch_enabled: bool = true
+## How much the sprite stretches vertically at max speed (0.2 = 20% taller)
+@export var stretch_amount: float = 0.2
+## How much the sprite squashes on the hardest landing (0.3 = 30% shorter)
+@export var landing_squash_amount: float = 0.3
+## Landings slower than this (px/s) don't squash
+@export var min_landing_speed: float = 120.0
+## How fast the squash springs back to normal
+@export var squash_recovery_speed: float = 14.0
+## How fast the stretch eases in and out as your vertical speed changes
+@export var stretch_smooth_speed: float = 18.0
+## 0 = height changes only, 0.5 = roughly keeps the sprite's "volume" (wider when squashed)
+@export_range(0.0, 1.0) var width_compensation: float = 0.3
 
 
 ## TODO: remove test stuff
@@ -42,80 +70,195 @@ const BRONZE = preload("uid://bu8jpodl1e8a6")
 const SILVER = preload("uid://ddrw7hwqyj64u")
 const GOLD = preload("uid://csuvmflgwwqic")
 
-
 var resources: Array = [BRONZE, SILVER, GOLD]
 
 var in_shop: bool = false
+var is_dead: bool = false
+var jetpack_ready: bool = true
+
+## Knockback / explosion velocity, kept separate so movement input doesn't overwrite it
+var external_velocity: Vector2 = Vector2.ZERO
+
+@onready var sprite: Sprite2D = $Sprite2D
+var sprite_base_scale: Vector2 = Vector2.ONE
+var sprite_base_position: Vector2 = Vector2.ZERO
+var was_on_floor: bool = false
+var stretch_current: float = 0.0 # smoothed stretch from vertical speed
+var squash_current: float = 0.0  # landing squash, decays back to 0
+
 
 func _ready() -> void:
+	if sprite:
+		sprite_base_scale = sprite.scale
+		sprite_base_position = sprite.position
 	EventBus.shop_opened.connect(on_shop_opened)
 	EventBus.shop_closed.connect(on_shop_closed)
 	if drill_timer:
 		drill_timer.wait_time = drill_interval
+		# Safe to leave the editor connection in place; this only connects if missing
+		if not drill_timer.timeout.is_connected(_on_drill_timer_timeout):
+			drill_timer.timeout.connect(_on_drill_timer_timeout)
+
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("debug_key"):
+	if event.is_action_pressed("debug_key"):
 		GameState.add_ore_to_inventory(resources.pick_random().duplicate())
-	if Input.is_action_just_pressed("Charge"):
+	elif event.is_action_pressed("Charge"):
 		GameState.sell_all_ores()
 
-func _process(delta: float) -> void:
-	if not in_shop:
-		if Input.is_action_pressed("Dig"):
-			try_drilling(delta)
-		if Input.is_action_just_released("Dig"):
-			drill_timer.stop()
 
+func _process(delta: float) -> void:
+	if can_act() and Input.is_action_pressed("Dig"):
+		try_drilling(delta)
+	else:
+		# Also covers releasing the button, opening the shop, dying
+		stop_drilling()
+
+	update_squash_stretch(delta)
 
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	# Gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-	
-	if not in_shop:
+		velocity.y = minf(velocity.y, max_fall_speed)
+
+	if can_act():
 		handle_jump(delta)
+		handle_horizontal_movement(delta)
+	else:
+		# Don't keep sliding forever when the shop opens or the player dies
+		velocity.x = move_toward(velocity.x, 0.0, friction * delta)
 
-		# Get the input direction and handle the movement/deceleration.
-		# As good practice, you should replace UI actions with custom gameplay actions.
-		var direction := Input.get_axis("move_left", "move_right")
-		if direction:
-			velocity.x = direction * SPEED
-		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-
+	# External velocity is added for the move, then removed so it
+	# never gets mixed into the input-driven velocity
+	# Speed we're travelling at the moment of impact (used for the landing squash)
+	var impact_speed := velocity.y
+	velocity += external_velocity
 	move_and_slide()
+
+	if is_on_floor() and not was_on_floor:
+		on_landed(impact_speed)
+	was_on_floor = is_on_floor()
+
+	# Don't keep pushing into things we've hit
+	if is_on_wall():
+		external_velocity.x = 0.0
+	if is_on_ceiling() and external_velocity.y < 0.0:
+		external_velocity.y = 0.0
+	if is_on_floor() and external_velocity.y > 0.0:
+		external_velocity.y = 0.0
+
+	velocity -= external_velocity
+	external_velocity = external_velocity.lerp(Vector2.ZERO, 1.0 - exp(-external_velocity_decay * delta))
+
+
+func can_act() -> bool:
+	return not in_shop and not is_dead
+
+
+func handle_horizontal_movement(delta: float) -> void:
+	var direction := Input.get_axis("move_left", "move_right")
+	var control := 1.0 if is_on_floor() else air_control
+
+	if direction != 0.0:
+		var accel := acceleration
+		# Turning around: brake harder so reversing doesn't feel mushy
+		if signf(velocity.x) == -signf(direction):
+			accel += friction
+		velocity.x = move_toward(velocity.x, direction * move_speed, accel * control * delta)
+	else:
+		velocity.x = move_toward(velocity.x, 0.0, friction * control * delta)
+
+
+func handle_jump(delta: float) -> void:
+	if is_on_floor():
+		if Input.is_action_just_pressed("jump"):
+			velocity.y = jump_velocity
+			jetpack_ready = not jetpack_needs_repress
+		else:
+			# Walking off a ledge, or just landed
+			jetpack_ready = true
+		return
+
+	# In the air
+	if Input.is_action_just_pressed("jump"):
+		jetpack_ready = true
+
+	if jetpack_ready and Input.is_action_pressed("jump") and energy > 0.0:
+		# Only push up to the jetpack speed. This never slows a faster jump down.
+		if velocity.y > jetpack_velocity:
+			velocity.y = maxf(velocity.y - jetpack_acceleration * delta, jetpack_velocity)
+		energy -= jetpack_energy_drain_rate * delta
+
+
+func try_drilling(delta: float) -> void:
+	if energy <= 0.0:
+		stop_drilling()
+		return
+	energy -= drill_energy_drain_rate * delta
+	if drill_timer and drill_timer.is_stopped():
+		drill_timer.start()
+
+
+func stop_drilling() -> void:
+	if drill_timer and not drill_timer.is_stopped():
+		drill_timer.stop()
+
+
+func _on_drill_timer_timeout() -> void:
+	if drill and can_act():
+		drill.deal_damage(drill_damage)
+
+
+func on_landed(impact_speed: float) -> void:
+	if impact_speed < min_landing_speed:
+		return
+	var t := clampf(impact_speed / max_fall_speed, 0.0, 1.0)
+	squash_current = t * landing_squash_amount
+	stretch_current = 0.0 # drop the fall stretch so the squash reads immediately
+
+
+func update_squash_stretch(delta: float) -> void:
+	if not sprite:
+		return
+	if not squash_stretch_enabled:
+		sprite.scale = sprite_base_scale
+		sprite.position = sprite_base_position
+		return
+
+	# Stretch taller the faster we move vertically (rising or falling), none on the ground
+	var target_stretch := 0.0
+	if not is_on_floor():
+		target_stretch = clampf(absf(velocity.y) / max_fall_speed, 0.0, 1.0) * stretch_amount
+	stretch_current = lerpf(stretch_current, target_stretch, 1.0 - exp(-stretch_smooth_speed * delta))
+	squash_current = lerpf(squash_current, 0.0, 1.0 - exp(-squash_recovery_speed * delta))
+
+	# Positive = taller and thinner, negative = shorter and wider
+	var amount := stretch_current - squash_current
+	var scale_y := 1.0 + amount
+	var scale_x := 1.0 - amount * width_compensation
+	sprite.scale = sprite_base_scale * Vector2(scale_x, scale_y)
+
+	# Scale around the feet, not the sprite's center, so it doesn't float or sink into the ground
+	var bottom := sprite.get_rect().end.y * sprite_base_scale.y
+	sprite.position.y = sprite_base_position.y + bottom * (1.0 - scale_y)
+
+
+func take_damage(amount: float) -> void:
+	if is_dead:
+		return
+	current_health -= amount
+
+
+## Call this for knockback, explosions, etc. e.g. apply_knockback(Vector2(200, -150))
+func apply_knockback(impulse: Vector2) -> void:
+	external_velocity += impulse
 
 
 func on_shop_opened() -> void:
 	in_shop = true
 
+
 func on_shop_closed() -> void:
 	in_shop = false
-
-
-func take_damage(amount: float) -> void:
-	current_health -= amount
-
-func handle_jump(delta: float) -> void:
-	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-	# Handle jetpack
-	if Input.is_action_pressed("jump") and  not is_on_floor():
-		if energy >= 0:
-			velocity.y = jetpack_velocity
-			energy -= jetpack_energy_drain_rate * delta
-		else:
-			print("Not enough energy for jetpack")
-
-func try_drilling(delta: float) -> void:
-	if energy >= 0:
-		energy -= drill_energy_drain_rate * delta
-		if drill_timer.time_left <= 0:
-			drill_timer.start()
-	else:
-		print("Not enough energy for drill")
-
-func _on_drill_timer_timeout() -> void:
-	drill.deal_damage(drill_damage)

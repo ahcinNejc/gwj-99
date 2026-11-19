@@ -1,3 +1,4 @@
+class_name WorldGridDataLayer 
 extends TileMapLayer
 
 signal generated
@@ -29,7 +30,7 @@ const ATLAS := {
 	"Dirt": Vector2i(0, 0),
 	"Stone": Vector2i(1, 0),
 	"Copper": Vector2i(2, 0),
-	"Iron": Vector2i(3, 0),
+	"Silver": Vector2i(3, 0),
 	"StoneHard": Vector2i(4, 0),
 	"Gold": Vector2i(5, 0),
 	"Ruby": Vector2i(6, 0),
@@ -42,18 +43,13 @@ const ATLAS := {
 # Higher threshold = rarer. Order each tier's ores from rarest to most common
 # if you want the rare one to take priority.
 const ORES := [
-	{"mat": "Iron",    "tier": "Stone",         "frequency": 0.10, "threshold": 0.50},
+	{"mat": "Silver",    "tier": "Stone",         "frequency": 0.10, "threshold": 0.50},
 	{"mat": "Copper",  "tier": "Stone",         "frequency": 0.10, "threshold": 0.45},
 	{"mat": "Ruby",    "tier": "StoneHard",     "frequency": 0.10, "threshold": 0.55},
 	{"mat": "Gold",    "tier": "StoneHard",     "frequency": 0.10, "threshold": 0.50},
 	{"mat": "Diamond", "tier": "StoneVeryHard", "frequency": 0.10, "threshold": 0.60},
 	{"mat": "Emerald", "tier": "StoneVeryHard", "frequency": 0.10, "threshold": 0.55},
 ]
-
-
-func _ready() -> void:
-	generate()
-
 
 func generate() -> void:
 	clear() # wipes anything painted in the editor

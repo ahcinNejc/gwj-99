@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://cb3oadbagsbvh"]
 
-[ext_resource type="Script" uid="uid://cuh61ss5udhwd" path="res://scripts/player.gd" id="1_cvnsp"]
+[ext_resource type="Script" uid="uid://cuh61ss5udhwd" path="res://Scripts/player.gd" id="1_cvnsp"]
 [ext_resource type="Texture2D" uid="uid://bcfcib3ulsw7s" path="res://assets/player/player.png" id="2_dqkch"]
-[ext_resource type="Script" uid="uid://c38dcru4f0dnp" path="res://scripts/drill.gd" id="3_6t5aa"]
+[ext_resource type="Script" uid="uid://c38dcru4f0dnp" path="res://Scripts/drill.gd" id="3_6t5aa"]
 [ext_resource type="Texture2D" uid="uid://85mlk3e68kf5" path="res://assets/player/drill.png" id="4_dqkch"]
+[ext_resource type="Script" uid="uid://d1ppp58nlflfl" path="res://Scenes/camera_2d.gd" id="5_fkybt"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ndpnn"]
 radius = 15.0
@@ -19,6 +20,7 @@ drill = NodePath("Drill")
 drill_timer = NodePath("DrillTimer")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1889859225]
+unique_name_in_owner = true
 texture = ExtResource("2_dqkch")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1992314107]
@@ -47,5 +49,8 @@ position = Vector2(25, 0)
 [node name="DrillTimer" type="Timer" parent="." unique_id=1789266069]
 wait_time = 0.1
 one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1549480372]
+script = ExtResource("5_fkybt")
 
 [connection signal="timeout" from="DrillTimer" to="." method="_on_drill_timer_timeout"]

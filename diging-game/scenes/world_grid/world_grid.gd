@@ -1,7 +1,7 @@
-extends Node2D
 class_name WorldGrid
+extends Node2D
 
-@onready var data_layer: TileMapLayer = $DataLayer
+@onready var data_layer: WorldGridDataLayer = $DataLayer
 
 # Index = tier, lowest first
 @onready var display_layers: Array[TileMapLayer] = [
@@ -17,7 +17,7 @@ const MATERIALS := {
 	"Dirt":            {"atlas": Vector2i(0, 0), "tier": 0, "source": 0},
 	"Stone":           {"atlas": Vector2i(1, 0), "tier": 1, "source": 0},
 	"Copper":          {"atlas": Vector2i(2, 0), "tier": 1, "source": 1},
-	"Iron":            {"atlas": Vector2i(3, 0), "tier": 1, "source": 2},
+	"Silver":            {"atlas": Vector2i(3, 0), "tier": 1, "source": 2},
 	"StoneHard":       {"atlas": Vector2i(4, 0), "tier": 2, "source": 0},
 	"Gold":            {"atlas": Vector2i(5, 0), "tier": 2, "source": 1},
 	"Ruby":            {"atlas": Vector2i(6, 0), "tier": 2, "source": 2},
@@ -68,6 +68,19 @@ func clear_cell(cell: Vector2i) -> void:
 
 
 # Internals methods
+
+# Refresh
+func refresh_display() -> void:
+	for layer in display_layers:
+		layer.clear()
+	
+	# Collect every touched display cell, refresh each only once
+	var dirty := {}
+	for cell in data_layer.get_used_cells():
+		for offset in AFFECTED:
+			dirty[cell + offset] = true
+	for d in dirty:
+		_refresh_display_cell(d)
 
 # update block state (rendering the block)
 func _update_around(data_cell: Vector2i) -> void:
