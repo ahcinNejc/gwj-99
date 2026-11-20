@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="OreData" format=3 uid="uid://tardxy3pqgs2"]
+
+[ext_resource type="Script" uid="uid://cpxwjviwrnsry" path="res://scripts/ore_data.gd" id="1_6x35p"]
+
+[resource]
+script = ExtResource("1_6x35p")
+display_name = "Diamond"
+value = 100.0
+metadata/_custom_type_script = "uid://cpxwjviwrnsry"

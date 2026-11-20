@@ -75,6 +75,7 @@ func _ready() -> void:
 		sprite_base_position = sprite.position
 	EventBus.shop_opened.connect(on_shop_opened)
 	EventBus.shop_closed.connect(on_shop_closed)
+	EventBus.refill_energy.connect(_on_refill_energy)
 
 
 
@@ -190,6 +191,10 @@ func on_shop_opened() -> void:
 
 func on_shop_closed() -> void:
 	in_shop = false
+
+func _on_refill_energy() -> void:
+	energy = max_energy
+	EventBus.player_energy_changed.emit(energy)
 
 
 # Private Methods

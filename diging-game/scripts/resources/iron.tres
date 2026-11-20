@@ -4,7 +4,6 @@
 
 [resource]
 script = ExtResource("1_bnhrt")
-display_name = "Silver"
-value = 5.0
+display_name = "Iron"
 texture = "res://assets/ores/silver.png"
 metadata/_custom_type_script = "uid://cpxwjviwrnsry"

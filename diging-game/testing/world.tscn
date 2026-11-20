@@ -12,6 +12,7 @@ script = ExtResource("1_6jdkp")
 [node name="Player" parent="." unique_id=1680850489 instance=ExtResource("2_2wjc2")]
 unique_name_in_owner = true
 position = Vector2(195, -85)
+scale = Vector2(0.8, 0.8)
 
 [node name="Shop" parent="." unique_id=1212234807 instance=ExtResource("3_iptrd")]
 position = Vector2(74, -30)

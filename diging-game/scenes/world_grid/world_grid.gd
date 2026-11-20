@@ -132,6 +132,7 @@ func damage_block(cell: Vector2i, amount: float) -> bool:
 	
 	clear_cell(cell)
 	block_broken.emit(cell, mat)
+	GameState.ore_mined(mat)
 	return true
 
 # Rebuild every display layer from the data layer

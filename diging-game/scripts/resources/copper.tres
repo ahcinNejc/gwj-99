@@ -5,5 +5,6 @@
 [resource]
 script = ExtResource("1_ji1qv")
 display_name = "Copper"
+value = 5.0
 texture = "res://assets/ores/copper.png"
 metadata/_custom_type_script = "uid://cpxwjviwrnsry"

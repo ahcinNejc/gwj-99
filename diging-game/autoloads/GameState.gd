@@ -2,6 +2,16 @@ extends Node
 
 
 
+var ORES = {
+	"Iron": preload("uid://ddrw7hwqyj64u"),
+	"Copper":  preload("uid://bu8jpodl1e8a6"),
+	"Ruby": preload("uid://c463kg04w8tt8"),
+	"Gold":   preload("uid://csuvmflgwwqic"),
+	"Diamond":  preload("uid://tardxy3pqgs2"),
+	"Emerald": preload("uid://tardxy3pqgs2"),
+}
+
+
 
 var money: float = 0:
 	set(value):
@@ -11,12 +21,18 @@ var money: float = 0:
 
 var ore_inventory: Dictionary[String, OreData] = {}
 
+func ore_mined(ore_name: String) -> void:
+	if ore_name in ORES.keys():
+		add_ore_to_inventory(ORES[ore_name])
+
 func add_ore_to_inventory(ore_to_add: OreData) -> void:
 	print("Adding ore to inventory: ", ore_to_add.display_name)
-	if ore_to_add.display_name in ore_inventory.keys():
-		ore_inventory[ore_to_add.display_name].amount_in_stack += ore_to_add.amount_in_stack
+	## duplicate is neede for reasources, otherwisi the amount breaks
+	var ore_duplicate = ore_to_add.duplicate()
+	if ore_duplicate.display_name in ore_inventory.keys():
+		ore_inventory[ore_duplicate.display_name].amount_in_stack += ore_duplicate.amount_in_stack
 	else:
-		ore_inventory[ore_to_add.display_name] = ore_to_add
+		ore_inventory[ore_duplicate.display_name] = ore_duplicate
 	print("Current Ore Inventory:")
 	for ore in ore_inventory.keys():
 		print("    " ,ore," ", ore_inventory[ore].amount_in_stack)

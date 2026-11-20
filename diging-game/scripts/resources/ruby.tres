@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="OreData" format=3 uid="uid://c463kg04w8tt8"]
+
+[ext_resource type="Script" uid="uid://cpxwjviwrnsry" path="res://scripts/ore_data.gd" id="1_8v6ky"]
+
+[resource]
+script = ExtResource("1_8v6ky")
+display_name = "Ruby"
+value = 20.0
+texture = "res://assets/ores/ruby.png"
+metadata/_custom_type_script = "uid://cpxwjviwrnsry"

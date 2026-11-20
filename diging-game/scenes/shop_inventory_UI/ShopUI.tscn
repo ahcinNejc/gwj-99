@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://blnku1lip687a" path="res://scripts/UI/shop_ui.gd" id="1_i6mk6"]
 
-[node name="ShopUi" type="MarginContainer" unique_id=1823425170 node_paths=PackedStringArray("sell_all_button")]
+[node name="ShopUi" type="MarginContainer" unique_id=1823425170 node_paths=PackedStringArray("sell_all_button", "refill_energy_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,6 +14,7 @@ theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 80
 script = ExtResource("1_i6mk6")
 sell_all_button = NodePath("PanelContainer/VBoxContainer/SellAllButton")
+refill_energy_button = NodePath("PanelContainer/VBoxContainer/RefillEnergyButton")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1666035311]
 layout_mode = 2
@@ -31,4 +32,10 @@ layout_mode = 2
 text = "Sell all
 "
 
+[node name="RefillEnergyButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=111511824]
+layout_mode = 2
+disabled = true
+text = "Refill Energy 10"
+
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SellAllButton" to="." method="_on_sell_all_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/RefillEnergyButton" to="." method="_on_refill_energy_button_pressed"]
