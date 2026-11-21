@@ -13,7 +13,7 @@ var ORES = {
 
 
 
-var money: float = 0:
+var money: float = 20:
 	set(value):
 		money = value
 		EventBus.money_changed.emit(money)

@@ -34,7 +34,6 @@ text = "Sell all
 
 [node name="RefillEnergyButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=111511824]
 layout_mode = 2
-disabled = true
 text = "Refill Energy 10"
 
 [connection signal="pressed" from="PanelContainer/VBoxContainer/SellAllButton" to="." method="_on_sell_all_button_pressed"]

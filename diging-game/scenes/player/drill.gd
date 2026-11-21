@@ -6,7 +6,8 @@ extends Node2D
 @export var drill_timer: Timer
 @export var drill_energy_drain_rate: float = 20.0
 @export var drill_interval: float = 0.3
-@export var drill_damage: float = 1.0
+@export var drill_damage: float = 10
+
 
 # assigned externally by world.tscn
 var world_grid: WorldGrid
