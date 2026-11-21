@@ -36,7 +36,7 @@ func try_drilling(delta: float) -> void:
 		return
 	
 	if not _drilling_sfx:
-		_drilling_sfx = AudioManager.play_sfx("drilling", true)
+		_drilling_sfx = AudioManager.play_sfx("drilling", true, -16)
 	
 	player.energy -= drill_energy_drain_rate * delta
 	if drill_timer and drill_timer.is_stopped():
