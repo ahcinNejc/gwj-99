@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d0pq1hswftwuv" path="res://scenes/shop.tscn" id="3_iptrd"]
 [ext_resource type="PackedScene" uid="uid://cjlqxo6sa6unl" path="res://scenes/world_grid/world_grid.tscn" id="4_5o66b"]
 [ext_resource type="PackedScene" uid="uid://b3dkc7lk0x7ne" path="res://scenes/UI/ui.tscn" id="5_e07vp"]
+[ext_resource type="PackedScene" uid="uid://bo66pbsnc7d7j" path="res://scenes/UI/pause_menu.tscn" id="6_2wjc2"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ndpnn"]
 normal = Vector2(1, 0)
@@ -26,9 +27,6 @@ position = Vector2(74, -30)
 [node name="WorldGrid" parent="." unique_id=1165291489 instance=ExtResource("4_5o66b")]
 unique_name_in_owner = true
 
-[node name="UI" parent="." unique_id=1882404124 instance=ExtResource("5_e07vp")]
-unique_name_in_owner = true
-
 [node name="WorldBoundries" type="Node2D" parent="." unique_id=1805221247]
 
 [node name="Left" type="StaticBody2D" parent="WorldBoundries" unique_id=176289588]
@@ -41,3 +39,8 @@ position = Vector2(1024, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundries/Right" unique_id=697109668]
 shape = SubResource("WorldBoundaryShape2D_5r1x3")
+
+[node name="UI" parent="." unique_id=1882404124 instance=ExtResource("5_e07vp")]
+unique_name_in_owner = true
+
+[node name="PauseMenu" parent="." unique_id=1821751314 instance=ExtResource("6_2wjc2")]
