@@ -6,7 +6,7 @@ extends Node2D
 @export var drill_timer: Timer
 @export var drill_energy_drain_rate: float = 20.0
 @export var drill_interval: float = 0.3
-@export var drill_damage: float = 10
+@export var drill_damage: float = 1
 
 
 # assigned externally by world.tscn
@@ -19,16 +19,7 @@ var _drilling_sfx: AudioStreamPlayer
 @onready var hitbox: Area2D = $Area2D
 @onready var drill_locator: Marker2D = $DrillLocator
 
-func _process(delta: float) -> void:
-	#var direction = (get_global_mouse_position() - global_position).normalized()
-	#if direction.y < -0.75:
-		#rotation = lerp_angle(rotation, deg_to_rad(-90), 10 * delta)
-	#elif direction.y > 0.75:
-		#rotation = lerp_angle(rotation, deg_to_rad(90), 10 * delta)
-	#elif direction.x < -0.75:
-		#rotation = lerp_angle(rotation, deg_to_rad(180), 10 * delta)
-	#else:
-		#rotation = lerp_angle(rotation, deg_to_rad(0), 10 * delta)
+func _process(_delta: float) -> void:
 	look_at(get_global_mouse_position())
 
 func try_drilling(delta: float) -> void:
@@ -37,7 +28,7 @@ func try_drilling(delta: float) -> void:
 		return
 	
 	if not _drilling_sfx:
-		_drilling_sfx = AudioManager.play_sfx("drilling", true, -16)
+		_drilling_sfx = AudioManager.play_sfx("drilling", true, -10)
 	
 	player.energy -= drill_energy_drain_rate * delta
 	if drill_timer and drill_timer.is_stopped():

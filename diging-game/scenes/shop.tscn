@@ -28,7 +28,7 @@ debug_color = Color(0.15412253, 0.6249692, 0.46329653, 0.41960785)
 
 [node name="InteractIcon" type="Sprite2D" parent="." unique_id=963455384]
 visible = false
-position = Vector2(0, -83)
+position = Vector2(2, -19)
 texture = ExtResource("3_032fp")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=175640711]

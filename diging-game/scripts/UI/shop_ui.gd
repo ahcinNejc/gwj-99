@@ -36,9 +36,11 @@ func _on_money_changed(money) -> void:
 func _on_sell_all_button_pressed() -> void:
 	print("Pressed sell all")
 	GameState.sell_all_ores()
+	AudioManager.play_sfx("ui_click")
 
 
 func _on_refill_energy_button_pressed() -> void:
 	print("Refill energy")
 	GameState.money -= 10
 	EventBus.refill_energy.emit()
+	AudioManager.play_sfx("ui_click")
