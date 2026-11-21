@@ -23,7 +23,7 @@ signal block_broken(cell: Vector2i, material_name: String)
 @export var caves_enabled := true
 @export var cave_min_depth := 12
 @export var cave_frequency := 0.06
-@export var cave_threshold := 0.30 ## higher = fewer caves
+@export var cave_threshold := 0.20 ## higher = fewer caves
 
 @onready var data_layer: TileMapLayer = $DataLayer
 

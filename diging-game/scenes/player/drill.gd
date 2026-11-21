@@ -11,6 +11,9 @@ extends Node2D
 # assigned externally by world.tscn
 var world_grid: WorldGrid
 
+# for handling drilling sfx
+var _drilling_sfx: AudioStreamPlayer
+
 @onready var player: Player = get_parent()
 @onready var hitbox: Area2D = $Area2D
 @onready var drill_locator: Marker2D = $DrillLocator
@@ -31,6 +34,10 @@ func try_drilling(delta: float) -> void:
 	if player.energy <= 0.0:
 		stop_drilling()
 		return
+	
+	if not _drilling_sfx:
+		_drilling_sfx = AudioManager.play_sfx("drilling", true)
+	
 	player.energy -= drill_energy_drain_rate * delta
 	if drill_timer and drill_timer.is_stopped():
 		drill_timer.start()
@@ -38,6 +45,7 @@ func try_drilling(delta: float) -> void:
 func stop_drilling() -> void:
 	if drill_timer and not drill_timer.is_stopped():
 		drill_timer.stop()
+		AudioManager.stop_sfx(_drilling_sfx)
 
 	if drill_timer:
 		drill_timer.wait_time = drill_interval
