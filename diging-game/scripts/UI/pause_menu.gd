@@ -8,8 +8,12 @@ func _ready() -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("pause"):
-		get_tree().paused = true
-		show()
+		if visible:
+			get_tree().paused = false
+			hide()
+		else:
+			get_tree().paused = true
+			show()
 	
 
 
