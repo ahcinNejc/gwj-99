@@ -98,11 +98,11 @@ func _process(delta: float) -> void:
 	else:
 		drill.stop_drilling()
 	
-	if can_act() and can_teleport and Input.is_action_just_pressed("return_to_surface") and energy <= (max_energy * teleport_energy_threshold):
+	if can_teleport and Input.is_action_just_pressed("return_to_surface") and energy <= (max_energy * teleport_energy_threshold):
 		$TeleportTimer.start()
 		can_teleport = false
 		
-		GameState.money -= (GameState.peak_money * debt_scale)
+		GameState.money -= GameState.peak_money * debt_scale
 		
 		global_position = teleport_position
 	

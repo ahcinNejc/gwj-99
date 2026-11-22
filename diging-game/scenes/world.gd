@@ -19,6 +19,7 @@ func _ready() -> void:
 	
 	# Assign player
 	UI_layer.energy_bar.set_up_bar(player)
+	UI_layer.teleport_label.player = player
 	player.teleport_position = %Shop.global_position
 	drill.world_grid = world_grid
 	

@@ -22,7 +22,7 @@ signal block_broken(cell: Vector2i, material_name: String)
 @export_group("Caves")
 @export var caves_enabled := true
 @export var cave_min_depth := 12
-@export var cave_frequency := 0.10
+@export var cave_frequency := 0.08
 @export var cave_threshold := 0.15 ## higher = fewer caves
 
 @export_group("VFX")
