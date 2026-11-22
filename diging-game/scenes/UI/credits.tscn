@@ -1,5 +1,10 @@
 [gd_scene format=3 uid="uid://dtw5rt2xeyrno"]
 
+[ext_resource type="Script" uid="uid://dbt2nkf15svva" path="res://scripts/UI/credits.gd" id="1_2lgad"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ndpnn"]
+font_size = 30
+
 [node name="Credits" type="Control" unique_id=218080442]
 layout_mode = 3
 anchors_preset = 15
@@ -7,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_2lgad")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1876244104]
 layout_mode = 1
@@ -51,7 +57,7 @@ text = "Game Design & Art"
 [node name="Label6" type="Label" parent="MarginContainer/VBoxContainer" unique_id=573257900]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "  KAJARO"
+text = "  KAJARO & Wife"
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1199879246]
 layout_mode = 2
@@ -62,3 +68,22 @@ text = "Music"
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "  vUest"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=886714405]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="." unique_id=186390654]
+layout_mode = 0
+offset_left = 349.0
+offset_top = 52.0
+offset_right = 562.0
+offset_bottom = 98.0
+text = "Thank you for playing
+<3"
+label_settings = SubResource("LabelSettings_ndpnn")
+horizontal_alignment = 1
