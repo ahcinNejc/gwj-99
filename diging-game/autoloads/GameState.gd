@@ -11,10 +11,13 @@ var ORES = {
 	"Emerald": preload("uid://tardxy3pqgs2"),
 }
 
-
+# The players money highest point
+var peak_money: int = roundi(money)
 
 var money: float = 0:
 	set(value):
+		if value > peak_money:
+			peak_money = roundi(money)
 		money = value
 		EventBus.money_changed.emit(money)
 

@@ -4,6 +4,8 @@ class_name ShopUI
 @export var sell_all_button: Button
 @export var refill_energy_button: Button
 
+@export var refill_percentage: float = 0.25 ## Take a fraction of the peak money
+var refill_cost: int = 0
 
 func _ready() -> void:
 	EventBus.shop_opened.connect(show)
@@ -13,6 +15,9 @@ func _ready() -> void:
 		if GameState.ore_inventory.size() <= 0:
 			sell_all_button.disabled = true
 	EventBus.money_changed.connect(_on_money_changed)
+	
+	refill_cost = roundi(GameState.peak_money * refill_percentage)
+	%RefillEnergyButton.text = "Refill Energy " + str(refill_cost)
 
 
 func _on_inventory_changed(current_inventory) -> void:
@@ -26,19 +31,21 @@ func _on_inventory_changed(current_inventory) -> void:
 
 func _on_money_changed(money) -> void:
 	## Energy button
-	if money < 10:
+	if money < refill_cost:
 		refill_energy_button.disabled = true
 	else:
 		refill_energy_button.disabled = false
-		
 
 
 func _on_sell_all_button_pressed() -> void:
 	print("Pressed sell all")
 	GameState.sell_all_ores()
+	refill_cost = roundi(GameState.peak_money * refill_percentage)
+	%RefillEnergyButton.text = "Refill Energy " + str(refill_cost)
+
 
 
 func _on_refill_energy_button_pressed() -> void:
 	print("Refill energy")
-	GameState.money -= 10
+	GameState.money -= refill_cost
 	EventBus.refill_energy.emit()

@@ -3,7 +3,7 @@ extends Node
 var sfx_paths: Dictionary[String, String] = {
 	"rocket": "res://assets/sfx/rocket.mp3",
 	"drilling": "res://assets/sfx/drilling.mp3",
-	"bock_break": "res://assets/sfx/block_break.wav",
+	"block_break": "res://assets/sfx/block_break.wav",
 	"ui_click": "res://assets/sfx/ui_click.mp3",
 	"money": "res://assets/sfx/money.mp3",
 }

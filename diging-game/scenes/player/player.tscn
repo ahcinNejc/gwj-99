@@ -51,4 +51,8 @@ one_shot = true
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1549480372]
 script = ExtResource("5_fkybt")
 
+[node name="TeleportTimer" type="Timer" parent="." unique_id=575479]
+wait_time = 15.0
+
 [connection signal="timeout" from="Drill/DrillTimer" to="." method="_on_drill_timer_timeout"]
+[connection signal="timeout" from="TeleportTimer" to="." method="_on_teleport_timer_timeout"]

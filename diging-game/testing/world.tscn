@@ -21,6 +21,7 @@ position = Vector2(195, -85)
 scale = Vector2(0.8, 0.8)
 
 [node name="Shop" parent="." unique_id=1212234807 instance=ExtResource("3_iptrd")]
+unique_name_in_owner = true
 position = Vector2(74, -30)
 
 [node name="WorldGrid" parent="." unique_id=1165291489 instance=ExtResource("4_5o66b")]

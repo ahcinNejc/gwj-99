@@ -19,6 +19,8 @@ extends CharacterBody2D
 		EventBus.player_energy_changed.emit(energy)
 		if energy <= 0.0:
 			EventBus.player_out_of_stamina.emit()
+@export var energy_regeneration: bool = true
+@export var energy_regenerated: float = 0.005 ## Set at %0.5
 
 @export_group("Movement")
 @export var move_speed: float = 125.0
@@ -26,7 +28,7 @@ extends CharacterBody2D
 @export var friction: float = 250.0
 @export_range(0.0, 1.0) var air_control: float = 0.6 ## 1.0 = same control as on the ground, lower = floatier in the air
 @export var external_velocity_decay: float = 4.0 ## Exponential decay rate for knockback / explosion impulses (higher = fades faster)
-@export var jump_velocity: float = -400.0
+@export var jump_velocity: float = 250.0
 @export var max_fall_speed: float = 400.0 ## Terminal velocity: falling speed never exceeds this (px/s)
 
 @export_group("Jetpack")
@@ -44,7 +46,10 @@ extends CharacterBody2D
 @export var stretch_smooth_speed: float = 18.0 ## How fast the stretch eases in and out as your vertical speed changes
 @export_range(0.0, 1.0) var width_compensation: float = 0.5 ## 0 = height changes only, 0.5 = roughly keeps the sprite's "volume" (wider when squashed)
 
-
+@export_group("Return to Surface Button")
+var teleport_energy_threshold: float = 0.2
+var teleport_position: Vector2i = Vector2i(0, 0)
+var debt_scale = 0.5 ## Currently set at 50% of the players peak money
 
 ## TODO: remove test stuff
 const COPPER = preload("res://scripts/resources/copper.tres")
@@ -56,6 +61,7 @@ var resources: Array = [COPPER, IRON, GOLD]
 var in_shop: bool = false
 var is_dead: bool = false
 var jetpack_ready: bool = true
+var can_teleport: bool = true
 
 ## Knockback / explosion velocity, kept separate so movement input doesn't overwrite it
 var external_velocity: Vector2 = Vector2.ZERO
@@ -91,7 +97,15 @@ func _process(delta: float) -> void:
 		drill.try_drilling(delta)
 	else:
 		drill.stop_drilling()
-
+	
+	if can_act() and can_teleport and Input.is_action_just_pressed("return_to_surface") and energy <= (max_energy * teleport_energy_threshold):
+		$TeleportTimer.start()
+		can_teleport = false
+		
+		GameState.money -= (GameState.peak_money * debt_scale)
+		
+		global_position = teleport_position
+	
 	_update_squash_stretch(delta)
 
 
@@ -100,23 +114,23 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		velocity.y = minf(velocity.y, max_fall_speed)
-
+	
 	if can_act():
 		handle_jump(delta)
 		handle_horizontal_movement(delta)
 	else:
 		# Don't keep sliding forever when the shop opens or the player dies
 		velocity.x = move_toward(velocity.x, 0.0, friction * delta)
-
+	
 	# External velocity is added for the move, then removed so it
 	var impact_speed := velocity.y
 	velocity += external_velocity
 	move_and_slide()
-
+	
 	if is_on_floor() and not was_on_floor:
 		on_landed(impact_speed)
 	was_on_floor = is_on_floor()
-
+	
 	# Don't keep pushing into things we've hit
 	if is_on_wall():
 		external_velocity.x = 0.0
@@ -124,9 +138,13 @@ func _physics_process(delta: float) -> void:
 		external_velocity.y = 0.0
 	if is_on_floor() and external_velocity.y > 0.0:
 		external_velocity.y = 0.0
-
+	
 	velocity -= external_velocity
 	external_velocity = external_velocity.lerp(Vector2.ZERO, 1.0 - exp(-external_velocity_decay * delta))
+	
+	# Energy regeneration
+	if energy_regeneration:
+		energy += max_energy * (energy_regenerated * delta)
 
 # always check for any action veing done
 func can_act() -> bool:
@@ -136,7 +154,7 @@ func can_act() -> bool:
 func handle_horizontal_movement(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 	var control := 1.0 if is_on_floor() else air_control
-
+	
 	if direction != 0.0:
 		var accel := acceleration
 		# Turning around: brake harder so reversing doesn't feel mushy
@@ -150,18 +168,18 @@ func handle_horizontal_movement(delta: float) -> void:
 func handle_jump(delta: float) -> void:
 	if is_on_floor():
 		if Input.is_action_just_pressed("jump"):
-			velocity.y = jump_velocity
+			velocity.y -= jump_velocity
 			jetpack_ready = not jetpack_needs_repress
 		else:
 			# Walking off a ledge, or just landed
 			jetpack_ready = true
 		return
-
+	
 	# In the air
 	if Input.is_action_just_pressed("jump"):
 		jetpack_ready = true
-
-	if jetpack_ready and Input.is_action_pressed("jump") and energy > 0.0:
+	
+	if jetpack_ready and Input.is_action_pressed("jump") and energy > (max_energy * energy_regenerated) * 2:
 		# Only push up to the jetpack speed. This never slows a faster jump down.
 		if velocity.y > jetpack_velocity:
 			velocity.y = maxf(velocity.y - jetpack_acceleration * delta, jetpack_velocity)
@@ -224,3 +242,6 @@ func _update_squash_stretch(delta: float) -> void:
 	# Scale around the feet, not the sprite's center, so it doesn't float or sink into the ground
 	var bottom := sprite.get_rect().end.y * sprite_base_scale.y
 	sprite.position.y = sprite_base_position.y + bottom * (1.0 - scale_y)
+
+func _on_teleport_timer_timeout() -> void:
+	can_teleport = true

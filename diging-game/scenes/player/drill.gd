@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 	look_at(get_global_mouse_position())
 
 func try_drilling(delta: float) -> void:
-	if player.energy <= 0.0:
+	if player.energy <= (player.max_energy * player.energy_regenerated) * 3:
 		stop_drilling()
 		return
 	
@@ -45,8 +45,10 @@ func try_drilling(delta: float) -> void:
 func stop_drilling() -> void:
 	if drill_timer and not drill_timer.is_stopped():
 		drill_timer.stop()
+	
+	if _drilling_sfx:
 		AudioManager.stop_sfx(_drilling_sfx)
-
+	
 	if drill_timer:
 		drill_timer.wait_time = drill_interval
 		# Safe to leave the editor connection in place; this only connects if missing
