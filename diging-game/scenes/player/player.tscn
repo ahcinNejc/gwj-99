@@ -10,7 +10,6 @@
 radius = 15.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5r1x3"]
-radius = 6.0
 height = 24.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1680850489 groups=["player"]]
@@ -30,19 +29,19 @@ script = ExtResource("3_6t5aa")
 drill_timer = NodePath("DrillTimer")
 
 [node name="Sprite2D" type="Sprite2D" parent="Drill" unique_id=1483497278]
-position = Vector2(16, 0)
+position = Vector2(18, 0)
 texture = ExtResource("4_dqkch")
 
 [node name="Area2D" type="Area2D" parent="Drill" unique_id=15411271]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Drill/Area2D" unique_id=681276963]
-position = Vector2(18, 0)
+position = Vector2(20, 0)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_5r1x3")
 debug_color = Color(0.826516, 0.2656865, 0.74047416, 0.41960785)
 
 [node name="DrillLocator" type="Marker2D" parent="Drill" unique_id=253242801]
-position = Vector2(25, 0)
+position = Vector2(32, 0)
 
 [node name="DrillTimer" type="Timer" parent="Drill" unique_id=1789266069]
 wait_time = 0.1
