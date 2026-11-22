@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://dtw5rt2xeyrno"]
 
 [ext_resource type="Script" uid="uid://dbt2nkf15svva" path="res://scripts/UI/credits.gd" id="1_2lgad"]
+[ext_resource type="Texture2D" uid="uid://cebiiu8qgo78n" path="res://assets/background/china_scene.png" id="2_228wp"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ndpnn"]
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_5r1x3"]
 font_size = 30
 
 [node name="Credits" type="Control" unique_id=218080442]
@@ -28,6 +32,7 @@ theme_override_constants/margin_bottom = 32
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2090805818]
 layout_mode = 2
+alignment = 2
 
 [node name="Label4" type="Label" parent="MarginContainer/VBoxContainer" unique_id=546786373]
 layout_mode = 2
@@ -37,7 +42,7 @@ text = "Code & Art"
 [node name="Label9" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1805270842]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "  Nejc & Woman"
+text = "  Nejc"
 
 [node name="Label5" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1157434431]
 layout_mode = 2
@@ -57,7 +62,7 @@ text = "Game Design & Art"
 [node name="Label6" type="Label" parent="MarginContainer/VBoxContainer" unique_id=573257900]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "  KAJARO & Wife"
+text = "  KAJARO"
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1199879246]
 layout_mode = 2
@@ -70,20 +75,31 @@ theme_override_font_sizes/font_size = 24
 text = "  vUest"
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=886714405]
+z_index = -100
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_228wp")
 
 [node name="Label" type="Label" parent="." unique_id=186390654]
 layout_mode = 0
-offset_left = 349.0
-offset_top = 52.0
-offset_right = 562.0
-offset_bottom = 98.0
+offset_left = 344.0
+offset_top = 72.0
+offset_right = 557.0
+offset_bottom = 123.0
 text = "Thank you for playing
 <3"
 label_settings = SubResource("LabelSettings_ndpnn")
 horizontal_alignment = 1
+
+[node name="Credits" type="Label" parent="." unique_id=1351690177]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 19.0
+offset_right = 600.0
+offset_bottom = 37.0
+text = "CREDITS"
+label_settings = SubResource("LabelSettings_5r1x3")
