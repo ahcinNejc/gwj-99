@@ -8,7 +8,7 @@ var ORES = {
 	"Ruby": preload("uid://c463kg04w8tt8"),
 	"Gold":   preload("uid://csuvmflgwwqic"),
 	"Diamond":  preload("uid://tardxy3pqgs2"),
-	"Emerald": preload("uid://tardxy3pqgs2"),
+	"Emerald": preload("uid://bv2h4rtpjxasj"),
 }
 
 var money: float = 50:
