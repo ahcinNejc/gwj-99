@@ -8,18 +8,12 @@ extends Node2D
 @onready var UI_layer: UserInterfaceLayer = %UI
 
 func _ready() -> void:
-	# Assign player too progress bar
+	# Assign player
 	UI_layer.energy_bar.set_up_bar(player)
-	
+	player.teleport_position = %Shop.global_position
 	drill.world_grid = world_grid
 	
 	# generate world
 	world_grid.generate()
 	
-	
 	AudioManager.play_music("silly")
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
