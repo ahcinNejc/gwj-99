@@ -13,7 +13,8 @@ var sfx_paths: Dictionary[String, String] = {
 var music_paths: Dictionary[String, String] = {
 	#"test": "res://assets/audio/test.mp3",
 	# Same format as `sfx_paths`
-	"silly": "uid://bkajxklo0m7ne"
+	"silly": "uid://bkajxklo0m7ne",
+	"china": "uid://75cp6xfrigt4"
 }
 
 var music_player: AudioStreamPlayer

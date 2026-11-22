@@ -132,3 +132,7 @@ func _refresh_button(button: Button, label: String, level: int) -> void:
 		var cost := _cost_for(level)
 		button.text = "%s Lv.%d  $%d" % [label, level, cost]
 		button.disabled = GameState.money < cost
+
+
+func _on_close_pressed() -> void:
+	EventBus.shop_closed.emit()

@@ -29,7 +29,4 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if player.global_position.y > china_location:
-		if not reached_china:
-			print("in china")
-			reached_china = true
-			AudioManager.play_sfx("china", false, 10.0)
+		get_tree().change_scene_to_file("uid://dtw5rt2xeyrno")

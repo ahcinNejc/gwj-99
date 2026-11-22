@@ -15,43 +15,72 @@ theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 80
 script = ExtResource("1_i6mk6")
-sell_all_button = NodePath("PanelContainer/VBoxContainer/SellAllButton")
-refill_energy_button = NodePath("PanelContainer/VBoxContainer/RefillEnergyButton")
-upgrade_damage_button = NodePath("PanelContainer/VBoxContainer/UpgradeDamageButton")
-upgrade_speed_button = NodePath("PanelContainer/VBoxContainer/UpgradeMiningSpeedButton")
+sell_all_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/SellAllButton")
+refill_energy_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/RefillEnergyButton")
+upgrade_damage_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/UpgradeDamageButton")
+upgrade_speed_button = NodePath("PanelContainer/MarginContainer/VBoxContainer/UpgradeMiningSpeedButton")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1666035311]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=2025357589]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=172936976]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=2025357589]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1698046825]
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1698046825]
 layout_mode = 2
 text = "Shop"
 horizontal_alignment = 1
 
-[node name="SellAllButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1032678134]
+[node name="SellAllButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1032678134]
+custom_minimum_size = Vector2(200, 28)
+custom_maximum_size = Vector2(200, -1)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Sell all
 "
 
-[node name="RefillEnergyButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=111511824]
+[node name="RefillEnergyButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=111511824]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Refill Energy"
 
-[node name="UpgradeDamageButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1173022307]
+[node name="UpgradeDamageButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1173022307]
+custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
+size_flags_horizontal = 4
 disabled = true
 text = "Upgrade Damage"
 
-[node name="UpgradeMiningSpeedButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1611880879]
+[node name="UpgradeMiningSpeedButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1611880879]
+custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 disabled = true
 text = "Upgrade Speed "
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/SellAllButton" to="." method="_on_sell_all_button_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/RefillEnergyButton" to="." method="_on_refill_energy_button_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/UpgradeDamageButton" to="." method="_on_upgrade_damage_button_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/UpgradeMiningSpeedButton" to="." method="_on_upgrade_mining_speed_button_pressed"]
+[node name="Close" type="Button" parent="PanelContainer" unique_id=224814318]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "X
+
+"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/SellAllButton" to="." method="_on_sell_all_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/RefillEnergyButton" to="." method="_on_refill_energy_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/UpgradeDamageButton" to="." method="_on_upgrade_damage_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/UpgradeMiningSpeedButton" to="." method="_on_upgrade_mining_speed_button_pressed"]
+[connection signal="pressed" from="PanelContainer/Close" to="." method="_on_close_pressed"]
