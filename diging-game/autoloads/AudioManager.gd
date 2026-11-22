@@ -9,7 +9,7 @@ var sfx_paths: Dictionary[String, String] = {
 	"beeps": "res://assets/sfx/beeps.wav",
 	"china": "res://assets/sfx/china.mp3",
 }
- 
+
 var music_paths: Dictionary[String, String] = {
 	#"test": "res://assets/audio/test.mp3",
 	# Same format as `sfx_paths`
@@ -42,23 +42,23 @@ func play_sfx(sfx_name: String, loop: bool = false, volume_db: float = 0.0, pitc
 	if not sfx_paths.has(sfx_name):
 		push_warning("AudioManager: no SFX registered for '%s'" % sfx_name)
 		return null
-
+	
 	var stream: AudioStream = load(sfx_paths[sfx_name])
 	if stream == null:
 		push_warning("AudioManager: failed to load SFX at '%s'" % sfx_paths[sfx_name])
 		return null
-
+	
 	if loop:
 		stream = stream.duplicate()
 		if "loop" in stream:
 			stream.loop = true
-
+	
 	var player := AudioStreamPlayer.new()
 	player.stream = stream
 	player.volume_db = volume_db
 	player.pitch_scale = pitch_scale
 	player.bus = "SFX"
-
+	
 	add_child(player)
 	player.play()
 
@@ -69,7 +69,7 @@ func play_sfx(sfx_name: String, loop: bool = false, volume_db: float = 0.0, pitc
 	else:
 		# Auto-cleanup once the sound finishes playing.
 		player.finished.connect(player.queue_free)
-
+	
 	return player
 
 

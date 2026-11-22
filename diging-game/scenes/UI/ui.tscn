@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://dy13pe5ursemt" path="res://scripts/UI/ores_container.gd" id="2_q7pk6"]
 [ext_resource type="PackedScene" uid="uid://bip5srg2q6vbp" path="res://scenes/shop_inventory_UI/OreInventoryIcon.tscn" id="3_m78vo"]
 [ext_resource type="Script" uid="uid://c0thfc58ykevm" path="res://scripts/UI/money_label.gd" id="4_smcll"]
+[ext_resource type="Script" uid="uid://dvy3u5ms0gav8" path="res://scenes/UI/teleport_label.gd" id="6_m41qk"]
 
 [node name="UI" type="CanvasLayer" unique_id=1882404124]
 script = ExtResource("1_q7pk6")
@@ -45,3 +46,16 @@ offset_bottom = 28.0
 grow_horizontal = 0
 text = "Money: 0"
 script = ExtResource("4_smcll")
+
+[node name="TeleportLabel" type="Label" parent="." unique_id=1220692541]
+unique_name_in_owner = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.5
+offset_right = 35.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "\"R\" to return to surface
+cost: $10"
+script = ExtResource("6_m41qk")
