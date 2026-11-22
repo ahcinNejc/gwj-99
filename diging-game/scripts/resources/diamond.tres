@@ -5,5 +5,6 @@
 [resource]
 script = ExtResource("1_6x35p")
 display_name = "Diamond"
-value = 100.0
+value = 500.0
+texture = "res://assets/ores/diamond.png"
 metadata/_custom_type_script = "uid://cpxwjviwrnsry"

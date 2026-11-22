@@ -11,7 +11,7 @@ var ORES = {
 	"Emerald": preload("uid://tardxy3pqgs2"),
 }
 
-var money: float = 20:
+var money: float = 50:
 	set(value):
 		if value > peak_money:
 			peak_money = roundi(value)

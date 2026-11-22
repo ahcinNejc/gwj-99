@@ -15,8 +15,8 @@ signal block_broken(cell: Vector2i, material_name: String)
 
 @export_group("Tier depths")
 @export var stone_start := 5
-@export var hard_start := 150
-@export var very_hard_start := 300
+@export var hard_start := 75
+@export var very_hard_start := 150
 @export var boundary_jitter := 2.0
 
 @export_group("Caves")
@@ -59,6 +59,9 @@ const CORNERS := [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(-1, 0), Vector2i(0
 # A data cell touches these four display cells
 const AFFECTED := [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1)]
 
+const NO_CELL := Vector2i(2147483647, 2147483647)
+
+var _probe := RectangleShape2D.new()
 var _infos: Array[Dictionary] = [] # in draw order
 var _info_by_name := {}
 var _info_by_atlas := {}
@@ -102,6 +105,44 @@ func _build_lookups() -> void:
 
 
 # Public API
+
+func get_cells_in_area(area: Area2D) -> Array[Vector2i]:
+	var result: Array[Vector2i] = []
+	_probe.size = Vector2(data_layer.tile_set.tile_size)
+
+	for child in area.get_children():
+		var cs := child as CollisionShape2D
+		if cs == null or cs.disabled or cs.shape == null:
+			continue
+		
+		var xform := cs.global_transform
+		var bounds: Rect2 = xform * cs.shape.get_rect() # world-space bounding box
+		var min_cell := world_to_cell(bounds.position)
+		var max_cell := world_to_cell(bounds.end)
+		
+		for x in range(min_cell.x, max_cell.x + 1):
+			for y in range(min_cell.y, max_cell.y + 1):
+				var cell := Vector2i(x, y)
+				if cell in result or material_at(cell) == "":
+					continue
+				var tile_xform := Transform2D(0.0, cell_to_world(cell))
+				if cs.shape.collide(xform, _probe, tile_xform):
+					result.append(cell)
+	return result
+
+# Closest solid cell inside the area to the origin
+func closest_cell_in_area(area: Area2D, origin: Vector2) -> Vector2i:
+	var best := NO_CELL
+	var best_dist := INF
+	for cell in get_cells_in_area(area):
+		var d := origin.distance_squared_to(cell_to_world(cell))
+		if d < best_dist:
+			best_dist = d
+			best = cell
+	return best
+
+func cell_to_world(cell: Vector2i) -> Vector2:
+	return data_layer.to_global(data_layer.map_to_local(cell))
 
 func world_to_cell(world_pos: Vector2) -> Vector2i:
 	return data_layer.local_to_map(data_layer.to_local(world_pos))
@@ -149,12 +190,6 @@ func refresh_display() -> void:
 	for d in dirty:
 		_refresh_display_cell(d)
 
-# Rebuild only a rectangle of data cells (Will mostly not be used, just incase for some weird edge cases :) )
-func refresh_region(rect: Rect2i) -> void:
-	for x in range(rect.position.x, rect.end.x + 2):
-		for y in range(rect.position.y, rect.end.y + 2):
-			_refresh_display_cell(Vector2i(x, y))
-
 # World generation
 func generate(seed: int = 0) -> void:
 	data_layer.clear()
@@ -197,6 +232,14 @@ func generate(seed: int = 0) -> void:
 	
 	refresh_display()
 
+# Rebuild only a rectangle of data cells (Will mostly not be used, just incase for some weird edge cases :) )
+func refresh_region(rect: Rect2i) -> void:
+	for x in range(rect.position.x, rect.end.x + 2):
+		for y in range(rect.position.y, rect.end.y + 2):
+			_refresh_display_cell(Vector2i(x, y))
+
+# Private methods
+
 func _tier_for(d: float) -> int:
 	if d < stone_start:
 		return 0
@@ -212,9 +255,6 @@ func _make_noise(noise_seed: int, freq: float) -> FastNoiseLite:
 	n.seed = noise_seed
 	n.frequency = freq
 	return n
-
-
-# Private methods
 
 func _update_around(data_cell: Vector2i) -> void:
 	for offset in AFFECTED:
