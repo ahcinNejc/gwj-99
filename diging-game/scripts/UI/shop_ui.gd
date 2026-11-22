@@ -17,7 +17,7 @@ func _ready() -> void:
 	EventBus.money_changed.connect(_on_money_changed)
 	
 	refill_cost = roundi(GameState.peak_money * refill_percentage)
-	%RefillEnergyButton.text = "Refill Energy " + str(refill_cost)
+	%RefillEnergyButton.text = "Refill Energy $" + str(refill_cost)
 
 
 func _on_inventory_changed(current_inventory) -> void:
@@ -41,9 +41,10 @@ func _on_sell_all_button_pressed() -> void:
 	print("Pressed sell all")
 	GameState.sell_all_ores()
 	refill_cost = roundi(GameState.peak_money * refill_percentage)
-	%RefillEnergyButton.text = "Refill Energy " + str(refill_cost)
+	%RefillEnergyButton.text = "Refill Energy $" + str(refill_cost)
 
 	AudioManager.play_sfx("ui_click")
+	AudioManager.play_sfx("money")
 
 
 func _on_refill_energy_button_pressed() -> void:

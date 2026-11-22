@@ -50,6 +50,10 @@ folder_colors={
 Blocks=""
 player=""
 
+[gui]
+
+theme/custom_font="uid://rrbh14q5neee"
+
 [input]
 
 move_left={

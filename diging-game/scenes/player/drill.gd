@@ -6,25 +6,45 @@ extends Node2D
 @export var drill_timer: Timer
 @export var drill_energy_drain_rate: float = 20.0
 @export var drill_interval: float = 0.3
-@export var drill_damage: float = 1
-
+@export var drill_damage: float = 1.0
+@export var drill_rotation_speed: float = 5.0
 
 # assigned externally by world.tscn
 var world_grid: WorldGrid
 
 # for handling drilling sfx
 var _drilling_sfx: AudioStreamPlayer
+var _beepfs_sfx: AudioStreamPlayer
 
 @onready var player: Player = get_parent()
 @onready var hitbox: Area2D = $Area2D
 @onready var drill_locator: Marker2D = $DrillLocator
 
 func _process(_delta: float) -> void:
-	look_at(get_global_mouse_position())
+	# look_at(get_global_mouse_position())
+	
+	# Calculate the angle to the mouse instead of instantly looking at it
+	var target_angle = (get_global_mouse_position() - global_position).angle()
+	
+	# Smoothly rotate toward that angle
+	rotation = lerp_angle(rotation, target_angle, drill_rotation_speed * _delta)
+	
+	# Keep rotation in 0-360 range
+	rotation_degrees = wrap(rotation_degrees, 0, 360)
+	
+	# Flip sprite when facing left
+	if rotation_degrees > 90 and rotation_degrees < 270:
+		scale.y = -1
+	else:
+		scale.y = 1
 
 func try_drilling(delta: float) -> void:
 	if player.energy <= (player.max_energy * player.energy_regenerated) * 3:
 		stop_drilling()
+		
+		if not _beepfs_sfx:
+			_beepfs_sfx = AudioManager.play_sfx("beeps")
+		
 		return
 	
 	if not _drilling_sfx:

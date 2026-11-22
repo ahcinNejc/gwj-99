@@ -15,8 +15,8 @@ signal block_broken(cell: Vector2i, material_name: String)
 
 @export_group("Tier depths")
 @export var stone_start := 5
-@export var hard_start := 150
-@export var very_hard_start := 300
+@export var hard_start := 75
+@export var very_hard_start := 150
 @export var boundary_jitter := 2.0
 
 @export_group("Caves")
