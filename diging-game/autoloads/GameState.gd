@@ -11,15 +11,15 @@ var ORES = {
 	"Emerald": preload("uid://tardxy3pqgs2"),
 }
 
-# The players money highest point
-var peak_money: int = roundi(money)
-
-var money: float = 0:
+var money: float = 20:
 	set(value):
 		if value > peak_money:
-			peak_money = roundi(money)
+			peak_money = roundi(value)
 		money = value
 		EventBus.money_changed.emit(money)
+
+# The players money highest point
+var peak_money: int = roundi(money)
 
 
 var ore_inventory: Dictionary[String, OreData] = {}

@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://fn4x7swkwy0y"]
 
+[ext_resource type="Theme" uid="uid://bwfwjgbxdat5i" path="res://UI_theme.tres" id="1_6708y"]
 [ext_resource type="Script" uid="uid://blnku1lip687a" path="res://scripts/UI/shop_ui.gd" id="1_i6mk6"]
 
 [node name="ShopUi" type="MarginContainer" unique_id=1823425170 node_paths=PackedStringArray("sell_all_button", "refill_energy_button")]
@@ -8,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_6708y")
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40

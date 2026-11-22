@@ -43,9 +43,11 @@ func _on_sell_all_button_pressed() -> void:
 	refill_cost = roundi(GameState.peak_money * refill_percentage)
 	%RefillEnergyButton.text = "Refill Energy " + str(refill_cost)
 
+	AudioManager.play_sfx("ui_click")
 
 
 func _on_refill_energy_button_pressed() -> void:
 	print("Refill energy")
 	GameState.money -= refill_cost
 	EventBus.refill_energy.emit()
+	AudioManager.play_sfx("ui_click")

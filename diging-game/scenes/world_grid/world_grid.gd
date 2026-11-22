@@ -133,6 +133,7 @@ func damage_block(cell: Vector2i, amount: float) -> bool:
 	clear_cell(cell)
 	AudioManager.play_sfx("block_break", false, 10.0)
 	block_broken.emit(cell, mat)
+	#AudioManager.play_sfx("block_break")
 	GameState.ore_mined(mat)
 	return true
 

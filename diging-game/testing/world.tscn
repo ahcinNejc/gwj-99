@@ -5,12 +5,18 @@
 [ext_resource type="PackedScene" uid="uid://d0pq1hswftwuv" path="res://scenes/shop.tscn" id="3_iptrd"]
 [ext_resource type="PackedScene" uid="uid://cjlqxo6sa6unl" path="res://scenes/world_grid/world_grid.tscn" id="4_5o66b"]
 [ext_resource type="PackedScene" uid="uid://b3dkc7lk0x7ne" path="res://scenes/UI/ui.tscn" id="5_e07vp"]
+[ext_resource type="PackedScene" uid="uid://bo66pbsnc7d7j" path="res://scenes/UI/pause_menu.tscn" id="6_2wjc2"]
+[ext_resource type="Texture2D" uid="uid://cbmlaa118awru" path="res://assets/background/background.png" id="7_iptrd"]
+[ext_resource type="Texture2D" uid="uid://enl1l0aire0e" path="res://assets/background/underground.png" id="8_5o66b"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ndpnn"]
 normal = Vector2(1, 0)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_5r1x3"]
 normal = Vector2(-1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_5xojl"]
+normal = Vector2(0, 1)
 
 [node name="World" type="Node2D" unique_id=919789753]
 script = ExtResource("1_6jdkp")
@@ -22,12 +28,9 @@ scale = Vector2(0.8, 0.8)
 
 [node name="Shop" parent="." unique_id=1212234807 instance=ExtResource("3_iptrd")]
 unique_name_in_owner = true
-position = Vector2(74, -30)
+position = Vector2(74, -42)
 
 [node name="WorldGrid" parent="." unique_id=1165291489 instance=ExtResource("4_5o66b")]
-unique_name_in_owner = true
-
-[node name="UI" parent="." unique_id=1882404124 instance=ExtResource("5_e07vp")]
 unique_name_in_owner = true
 
 [node name="WorldBoundries" type="Node2D" parent="." unique_id=1805221247]
@@ -42,3 +45,33 @@ position = Vector2(1024, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundries/Right" unique_id=697109668]
 shape = SubResource("WorldBoundaryShape2D_5r1x3")
+
+[node name="Roof" type="StaticBody2D" parent="WorldBoundries" unique_id=67446124]
+position = Vector2(569, -339)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundries/Roof" unique_id=139796388]
+shape = SubResource("WorldBoundaryShape2D_5xojl")
+
+[node name="UI" parent="." unique_id=1882404124 instance=ExtResource("5_e07vp")]
+unique_name_in_owner = true
+
+[node name="PauseMenu" parent="." unique_id=1821751314 instance=ExtResource("6_2wjc2")]
+
+[node name="Background" type="Node2D" parent="." unique_id=999851226]
+
+[node name="Cave" type="Sprite2D" parent="Background" unique_id=2081702671]
+z_index = -1000
+position = Vector2(513, -159)
+scale = Vector2(6.4125, 4)
+texture = ExtResource("7_iptrd")
+
+[node name="TextureRect" type="TextureRect" parent="Background" unique_id=1840268084]
+z_index = -1001
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1025.0
+offset_bottom = 15278.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("8_5o66b")
+stretch_mode = 1
