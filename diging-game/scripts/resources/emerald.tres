@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_b1qud")
 display_name = "Emerald"
-value = 300.0
+value = 250.0
 texture = "res://assets/ores/emerald.png"
 metadata/_custom_type_script = "uid://cpxwjviwrnsry"

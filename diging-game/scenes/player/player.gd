@@ -49,7 +49,7 @@ extends CharacterBody2D
 @export_group("Return to Surface Button")
 var teleport_energy_threshold: float = 0.2
 var teleport_position: Vector2i = Vector2i(0, 0)
-var debt_scale = 0.5 ## Currently set at 50% of the players peak money
+var debt_scale = 0.15 ## Currently set at 15% of the players peak money
 
 ## TODO: remove test stuff
 const COPPER = preload("res://scripts/resources/copper.tres")
@@ -65,6 +65,8 @@ var can_teleport: bool = true
 
 ## Knockback / explosion velocity, kept separate so movement input doesn't overwrite it
 var external_velocity: Vector2 = Vector2.ZERO
+
+var _jetpack_sfx: AudioStreamPlayer
 
 @onready var sprite: Sprite2D = $Sprite2D
 var sprite_base_scale: Vector2 = Vector2.ONE
@@ -178,10 +180,16 @@ func handle_jump(delta: float) -> void:
 		jetpack_ready = true
 	
 	if jetpack_ready and Input.is_action_pressed("jump") and energy > (max_energy * energy_regenerated) * 2:
+		if not _jetpack_sfx:
+			_jetpack_sfx = AudioManager.play_sfx("rocket", true, -7.5)
+		
 		# Only push up to the jetpack speed. This never slows a faster jump down.
 		if velocity.y > jetpack_velocity:
 			velocity.y = maxf(velocity.y - jetpack_acceleration * delta, jetpack_velocity)
 		energy -= jetpack_energy_drain_rate * delta
+	else:
+		if _jetpack_sfx:
+			AudioManager.stop_sfx(_jetpack_sfx)
 
 func on_landed(impact_speed: float) -> void:
 	if impact_speed < min_landing_speed:

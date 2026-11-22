@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_8v6ky")
 display_name = "Ruby"
-value = 20.0
+value = 120.0
 texture = "res://assets/ores/ruby.png"
 metadata/_custom_type_script = "uid://cpxwjviwrnsry"

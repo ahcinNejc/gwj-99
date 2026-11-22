@@ -11,8 +11,10 @@ script = ExtResource("1_q7pk6")
 
 [node name="EnergyBar" type="ProgressBar" parent="." unique_id=1571655774]
 unique_name_in_owner = true
-offset_right = 230.0
-offset_bottom = 27.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 235.0
+offset_bottom = 32.0
 script = ExtResource("1_2246s")
 
 [node name="OresContainer" type="HBoxContainer" parent="." unique_id=560417504]
@@ -38,7 +40,8 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -71.0
-offset_bottom = 23.0
+offset_top = 5.0
+offset_bottom = 28.0
 grow_horizontal = 0
 text = "Money: 0"
 script = ExtResource("4_smcll")

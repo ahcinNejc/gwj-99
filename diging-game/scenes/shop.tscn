@@ -34,7 +34,8 @@ texture = ExtResource("3_032fp")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=175640711]
 layer = 2
 
-[node name="ShopUi" parent="CanvasLayer" unique_id=1823425170 instance=ExtResource("3_1l46r")]
+[node name="ShopUI" parent="CanvasLayer" unique_id=1823425170 instance=ExtResource("3_1l46r")]
+unique_name_in_owner = true
 visible = false
 
 [connection signal="body_entered" from="InteractRange" to="." method="_on_interact_range_body_entered"]
