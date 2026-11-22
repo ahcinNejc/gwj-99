@@ -25,6 +25,12 @@ signal block_broken(cell: Vector2i, material_name: String)
 @export var cave_frequency := 0.06
 @export var cave_threshold := 0.20 ## higher = fewer caves
 
+@export_group("VFX")
+@export var vfx_enabled := true
+@export var hit_particle_amount := 4
+@export var break_particle_amount := 14
+@export var particle_size := 2.0 ## Pixels, before the random size variation
+
 @onready var data_layer: TileMapLayer = $DataLayer
 
 const DATA_SOURCE_ID := 0
@@ -53,6 +59,21 @@ const MATERIALS := {
 	"Emerald":       {"atlas": Vector2i(8, 0), "tier": 3, "hp": 9.0, "ore": true, "frequency": 0.10, "threshold": 0.55},
 }
 
+# Debris colour per material. Tweak these to match your art.
+const DEFAULT_PARTICLE_COLOR := Color("7a5230")
+const PARTICLE_COLORS := {
+	"Dirt":          Color("ae794dff"),
+	"Stone":         Color("a1a1aaff"),
+	"Iron":          Color("deb76eff"),
+	"Copper":        Color("b26429ff"),
+	"StoneHard":     Color("6a6a78"),
+	"Ruby":          Color("e0245e"),
+	"Gold":          Color("f2c230"),
+	"StoneVeryHard": Color("4a4a58"),
+	"Diamond":       Color("7fe8ff"),
+	"Emerald":       Color("2ecc71"),
+}
+
 # bit 0 = TL, bit 1 = TR, bit 2 = BL, bit 3 = BR
 const CORNERS := [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(-1, 0), Vector2i(0, 0)]
 
@@ -62,6 +83,7 @@ const AFFECTED := [Vector2i(0, 0), Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1
 const NO_CELL := Vector2i(2147483647, 2147483647)
 
 var _probe := RectangleShape2D.new()
+var _fade_ramp: Gradient # particle colour fades to transparent
 var _infos: Array[Dictionary] = [] # in draw order
 var _info_by_name := {}
 var _info_by_atlas := {}
@@ -77,6 +99,11 @@ func _ready() -> void:
 	var half := Vector2(data_layer.tile_set.tile_size) / 2.0
 	for info in _infos:
 		info["layer"].position = data_layer.position - half
+	
+	# Particles fade out over their lifetime
+	_fade_ramp = Gradient.new()
+	_fade_ramp.set_color(0, Color.WHITE)
+	_fade_ramp.set_color(1, Color(1, 1, 1, 0))
 	
 	# render world
 	refresh_display()
@@ -106,6 +133,7 @@ func _build_lookups() -> void:
 
 # Public API
 
+# All non-empty cells overlapped by the Area2D's collision shapes
 func get_cells_in_area(area: Area2D) -> Array[Vector2i]:
 	var result: Array[Vector2i] = []
 	_probe.size = Vector2(data_layer.tile_set.tile_size)
@@ -130,7 +158,7 @@ func get_cells_in_area(area: Area2D) -> Array[Vector2i]:
 					result.append(cell)
 	return result
 
-# Closest solid cell inside the area to the origin
+# Closest solid cell inside the area to the origin, or NO_CELL
 func closest_cell_in_area(area: Area2D, origin: Vector2) -> Vector2i:
 	var best := NO_CELL
 	var best_dist := INF
@@ -161,20 +189,22 @@ func clear_cell(cell: Vector2i) -> void:
 	_damage.erase(cell)
 	_update_around(cell)
 
-# Returns true if this hit broke the block
-func damage_block(cell: Vector2i, amount: float) -> bool:
+# Returns true if this hit broke the block.
+# source_pos (optional, world position of the drill tip) makes hit sparks fly back toward it.
+func damage_block(cell: Vector2i, amount: float, source_pos := Vector2.INF) -> bool:
 	var mat := material_at(cell)
 	if mat == "":
 		return false
 	
 	_damage[cell] = _damage.get(cell, 0.0) + amount
 	if _damage[cell] < MATERIALS[mat]["hp"]:
+		_spawn_hit_particles(cell, mat, source_pos)
 		return false
 	
+	_spawn_break_particles(cell, mat)
 	clear_cell(cell)
 	AudioManager.play_sfx("block_break", false, 10.0)
 	block_broken.emit(cell, mat)
-	#AudioManager.play_sfx("block_break")
 	GameState.ore_mined(mat)
 	return true
 
@@ -238,6 +268,7 @@ func refresh_region(rect: Rect2i) -> void:
 		for y in range(rect.position.y, rect.end.y + 2):
 			_refresh_display_cell(Vector2i(x, y))
 
+
 # Private methods
 
 func _tier_for(d: float) -> int:
@@ -292,3 +323,44 @@ func _refresh_display_cell(d: Vector2i) -> void:
 			layer.erase_cell(d)
 		else:
 			layer.set_cell(d, DISPLAY_SOURCE_ID, Vector2i(index, 0))
+
+
+# VFX
+
+func _spawn_hit_particles(cell: Vector2i, mat_name: String, source_pos: Vector2) -> void:
+	var dir := Vector2.UP
+	var spread := 180.0
+	if source_pos != Vector2.INF:
+		dir = (source_pos - cell_to_world(cell)).normalized()
+		spread = 50.0
+	_spawn_particles(cell, mat_name, hit_particle_amount, 40.0, 90.0, dir, spread, 0.25)
+
+func _spawn_break_particles(cell: Vector2i, mat_name: String) -> void:
+	_spawn_particles(cell, mat_name, break_particle_amount, 50.0, 140.0, Vector2.UP, 180.0, 0.5)
+
+func _spawn_particles(cell: Vector2i, mat_name: String, amount: int,
+		speed_min: float, speed_max: float, dir: Vector2, spread: float, life: float) -> void:
+	if not vfx_enabled:
+		return
+	
+	var p := CPUParticles2D.new()
+	p.one_shot = true
+	p.explosiveness = 1.0
+	p.amount = amount
+	p.lifetime = life
+	p.local_coords = false # particles stay in the world instead of following the node
+	p.direction = dir
+	p.spread = spread
+	p.initial_velocity_min = speed_min
+	p.initial_velocity_max = speed_max
+	p.gravity = Vector2(0, 400)
+	p.scale_amount_min = particle_size
+	p.scale_amount_max = particle_size * 1.6
+	p.color = PARTICLE_COLORS.get(mat_name, DEFAULT_PARTICLE_COLOR)
+	p.color_ramp = _fade_ramp
+	p.z_index = 10
+	p.finished.connect(p.queue_free)
+	
+	add_child(p)
+	p.global_position = cell_to_world(cell)
+	p.emitting = true
