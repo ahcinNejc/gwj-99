@@ -39,7 +39,6 @@ text = "Sell all
 [node name="RefillEnergyButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=111511824]
 unique_name_in_owner = true
 layout_mode = 2
-disabled = true
 text = "Refill Energy"
 
 [node name="UpgradeDamageButton" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1173022307]

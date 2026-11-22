@@ -7,7 +7,7 @@ signal block_broken(cell: Vector2i, material_name: String)
 @export_group("World")
 @export var world_seed := 0
 @export var width := 64
-@export var depth := 500
+@export var depth := 250
 
 @export_group("Surface")
 @export var surface_amplitude := 4.0
@@ -22,8 +22,8 @@ signal block_broken(cell: Vector2i, material_name: String)
 @export_group("Caves")
 @export var caves_enabled := true
 @export var cave_min_depth := 12
-@export var cave_frequency := 0.06
-@export var cave_threshold := 0.20 ## higher = fewer caves
+@export var cave_frequency := 0.10
+@export var cave_threshold := 0.15 ## higher = fewer caves
 
 @export_group("VFX")
 @export var vfx_enabled := true
