@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://vt487ua5to1j"]
 
-[ext_resource type="Script" uid="uid://cw6jttmnkrd3e" path="res://testing/world.gd" id="1_6jdkp"]
-[ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://scenes/player/player.tscn" id="2_2wjc2"]
-[ext_resource type="PackedScene" uid="uid://d0pq1hswftwuv" path="res://scenes/shop.tscn" id="3_iptrd"]
-[ext_resource type="PackedScene" uid="uid://cjlqxo6sa6unl" path="res://scenes/world_grid/world_grid.tscn" id="4_5o66b"]
-[ext_resource type="PackedScene" uid="uid://b3dkc7lk0x7ne" path="res://scenes/UI/ui.tscn" id="5_e07vp"]
-[ext_resource type="PackedScene" uid="uid://bo66pbsnc7d7j" path="res://scenes/UI/pause_menu.tscn" id="6_2wjc2"]
-[ext_resource type="Texture2D" uid="uid://cbmlaa118awru" path="res://assets/background/background.png" id="7_iptrd"]
-[ext_resource type="Texture2D" uid="uid://enl1l0aire0e" path="res://assets/background/underground.png" id="8_5o66b"]
+[ext_resource type="Script" uid="uid://cw6jttmnkrd3e" path="res://scenes/world.gd" id="1_4mrxx"]
+[ext_resource type="PackedScene" uid="uid://cb3oadbagsbvh" path="res://scenes/player/player.tscn" id="2_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://d0pq1hswftwuv" path="res://scenes/shop.tscn" id="3_w7kh3"]
+[ext_resource type="PackedScene" uid="uid://cjlqxo6sa6unl" path="res://scenes/world_grid/world_grid.tscn" id="4_e3hyu"]
+[ext_resource type="PackedScene" uid="uid://b3dkc7lk0x7ne" path="res://scenes/UI/ui.tscn" id="5_q5onr"]
+[ext_resource type="PackedScene" uid="uid://bo66pbsnc7d7j" path="res://scenes/UI/pause_menu.tscn" id="6_jhx03"]
+[ext_resource type="Texture2D" uid="uid://cbmlaa118awru" path="res://assets/background/background.png" id="7_o8fc1"]
+[ext_resource type="Texture2D" uid="uid://enl1l0aire0e" path="res://assets/background/underground.png" id="8_xo05s"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ndpnn"]
 normal = Vector2(1, 0)
@@ -19,18 +19,18 @@ normal = Vector2(-1, 0)
 normal = Vector2(0, 1)
 
 [node name="World" type="Node2D" unique_id=919789753]
-script = ExtResource("1_6jdkp")
+script = ExtResource("1_4mrxx")
 
-[node name="Player" parent="." unique_id=1680850489 instance=ExtResource("2_2wjc2")]
+[node name="Player" parent="." unique_id=1680850489 instance=ExtResource("2_7r4gi")]
 unique_name_in_owner = true
 position = Vector2(195, -85)
 scale = Vector2(0.8, 0.8)
 
-[node name="Shop" parent="." unique_id=1212234807 instance=ExtResource("3_iptrd")]
+[node name="Shop" parent="." unique_id=1212234807 instance=ExtResource("3_w7kh3")]
 unique_name_in_owner = true
 position = Vector2(74, -42)
 
-[node name="WorldGrid" parent="." unique_id=1165291489 instance=ExtResource("4_5o66b")]
+[node name="WorldGrid" parent="." unique_id=1165291489 instance=ExtResource("4_e3hyu")]
 unique_name_in_owner = true
 
 [node name="WorldBoundries" type="Node2D" parent="." unique_id=1805221247]
@@ -52,10 +52,10 @@ position = Vector2(569, -339)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundries/Roof" unique_id=139796388]
 shape = SubResource("WorldBoundaryShape2D_5xojl")
 
-[node name="UI" parent="." unique_id=1882404124 instance=ExtResource("5_e07vp")]
+[node name="UI" parent="." unique_id=1882404124 instance=ExtResource("5_q5onr")]
 unique_name_in_owner = true
 
-[node name="PauseMenu" parent="." unique_id=1821751314 instance=ExtResource("6_2wjc2")]
+[node name="PauseMenu" parent="." unique_id=1821751314 instance=ExtResource("6_jhx03")]
 
 [node name="Background" type="Node2D" parent="." unique_id=999851226]
 
@@ -63,7 +63,7 @@ unique_name_in_owner = true
 z_index = -1000
 position = Vector2(513, -159)
 scale = Vector2(6.4125, 4)
-texture = ExtResource("7_iptrd")
+texture = ExtResource("7_o8fc1")
 
 [node name="TextureRect" type="TextureRect" parent="Background" unique_id=1840268084]
 z_index = -1001
@@ -73,5 +73,5 @@ offset_right = 1025.0
 offset_bottom = 15278.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("8_5o66b")
+texture = ExtResource("8_xo05s")
 stretch_mode = 1

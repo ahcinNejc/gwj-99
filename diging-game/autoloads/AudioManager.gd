@@ -7,6 +7,7 @@ var sfx_paths: Dictionary[String, String] = {
 	"ui_click": "res://assets/sfx/ui_click.mp3",
 	"money": "res://assets/sfx/money.mp3",
 	"beeps": "res://assets/sfx/beeps.wav",
+	"china": "res://assets/sfx/china.mp3",
 }
  
 var music_paths: Dictionary[String, String] = {

@@ -1,6 +1,7 @@
 class_name World
 extends Node2D
 
+signal in_china
 
 @onready var player: Player = %Player
 @onready var drill: Drill = player.drill
@@ -8,8 +9,12 @@ extends Node2D
 @onready var UI_layer: UserInterfaceLayer = %UI
 @onready var shop: Shop = %Shop
 
+var china_location: float
+var reached_china: bool = false
+
 func _ready() -> void:
 	# set up for upgrades
+	china_location = world_grid.cell_to_world(Vector2i(0, world_grid.depth - 1)).y
 	shop.shop_ui.player = player
 	
 	# Assign player
@@ -21,3 +26,10 @@ func _ready() -> void:
 	world_grid.generate()
 	
 	AudioManager.play_music("silly")
+
+func _process(delta: float) -> void:
+	if player.global_position.y > china_location:
+		if not reached_china:
+			print("in china")
+			reached_china = true
+			AudioManager.play_sfx("china", false, 10.0)

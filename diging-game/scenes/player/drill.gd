@@ -5,8 +5,8 @@ extends Node2D
 @export_group("Drill")
 @export var drill_timer: Timer
 @export var drill_energy_drain_rate: float = 20.0
-@export var drill_interval: float = 0.3
-@export var drill_damage: float = 1.0
+@export var drill_interval: float = 0.001
+@export var drill_damage: float = 10.0
 @export var drill_rotation_speed: float = 10.0
 
 # assigned externally by world.tscn

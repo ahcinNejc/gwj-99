@@ -1,11 +1,6 @@
 extends Node2D
 
-## NOTHING HERE YET!??!!
-## We'll finalize everything here
 
 func _ready() -> void:
-	pass
-
-
-func _process(delta: float) -> void:
-	pass
+	SceneManager.change_scene("res://scenes/world.tscn")
+	await SceneManager.level_loaded

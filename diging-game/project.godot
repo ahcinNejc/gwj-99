@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Diging Game"
-run/main_scene="uid://vt487ua5to1j"
+run/main_scene="uid://drxoc1vkg44fb"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://bi8uoqvult1oo"
 AudioManager="*uid://v4llha7gtqm2"
 EventBus="*uid://c817aurbdfw00"
 GameState="*uid://g1ne8x8jimnl"
+SceneManager="*uid://gba4gljns5s3"
 
 [display]
 
